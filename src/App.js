@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import { Button, Typography, Paper } from '@mui/material';
+import './App.css';
+import { Button, Typography, Paper, Box } from '@mui/material';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -42,11 +43,13 @@ function WeatherApp() {
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
-        <Paper sx={{ width: 200 }}>
-          <Typography>SundeWeather Search</Typography>
-          <input type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." />
-          <Button type="submit">Get Weather</Button>
-        </Paper>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Paper sx={{ width: 400, padding: 7 }}>
+            <Typography variant='h4'>SundeWeather Search</Typography>
+            <input type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." />
+            <Button type="submit">Get Weather</Button>
+          </Paper>
+        </Box>
       </form>
       {error && <p>{error}</p>}
       {weatherData && (
