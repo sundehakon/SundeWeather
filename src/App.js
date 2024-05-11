@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios'; 
 import './App.css';
 import { Button, Typography, Paper, Box, TextField } from '@mui/material';
+import Particle from './Components/Particle';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -42,13 +43,15 @@ function WeatherApp() {
 
   return (
     <div>
+      <Particle />
+      <Box sx={{ position: 'relative', zIndex: 1 }}>
       <form onSubmit={handleFormSubmit}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Paper sx={{ width: 400, padding: 7, marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
             <Typography variant='h3'>Weather Search</Typography>
             <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined'/>
             <Button type="submit" sx={{ marginTop: 3 }}>Get Weather</Button>
-          </Paper>
+          </Paper>  
         </Box>
       </form>
       {error && <p>{error}</p>}
@@ -60,6 +63,7 @@ function WeatherApp() {
           </Paper>
         </Box>
       )}
+      </Box>
     </div>
   );
 }

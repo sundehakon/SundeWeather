@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 const LoginButton = () => {
     const { loginWithRedirect } = useAuth0();
 
-    return <Button onClick={() => loginWithRedirect()} sx={{ fontWeight: 'bolder', fontSize: 17, '&:hover': { color: 'black' } }} disableRipple style={{ backgroundColor: 'transparent' }} color='success'>Log In</Button>
+    return <Button onClick={() => loginWithRedirect()} sx={{ fontWeight: 'bolder', fontSize: 17, '&:hover': { color: 'white' } }} disableRipple style={{ backgroundColor: 'transparent' }} color='success'>Log In</Button>
 }
 
 export default LoginButton;
