@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import './App.css';
 import { Button, Typography, Paper, Box, TextField } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './login';
 import LogoutButton from './logout';
+import Particle from './Components/Particle';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -52,42 +52,45 @@ function WeatherApp() {
 
   return (
     <div>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
-        {!user && 
-          <LoginButton />
-        }
-        {user &&
-          <LogoutButton />
-        }
-      </Box>
-      <Box>
-        {user && (
-          <Box sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 2 }}>
-            <img src={user.picture} alt='User profile' style={{ borderRadius: '50%', height: 64, width: 64 }} />
-            <Typography sx={{ marginTop: 1, color: 'white' }}>
-              Welcome, {user.nickname}!
-            </Typography>
+      <Particle />
+      <Box sx={{ position: 'relative', zIndex: 1 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
+          {!user && 
+            <LoginButton />
+          }
+          {user &&
+            <LogoutButton />
+          }
+        </Box>
+        <Box>
+          {user && (
+            <Box sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 2 }}>
+              <img src={user.picture} alt='User profile' style={{ borderRadius: '50%', height: 64, width: 64 }} />
+              <Typography sx={{ marginTop: 1, color: 'white' }}>
+                Welcome, {user.nickname}!
+              </Typography>
+            </Box>
+          )}
+        </Box>
+        <form onSubmit={handleFormSubmit}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Paper sx={{ padding: 7, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
+              <Typography variant='h3'>Weather Search</Typography>
+              <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
+              <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
+            </Paper>
+          </Box>
+        </form>
+        {error && <p>{error}</p>}
+        {weatherData && (
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+              <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
+              <Typography>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
+            </Paper>
           </Box>
         )}
       </Box>
-      <form onSubmit={handleFormSubmit}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Paper sx={{ width: 400, padding: 7, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
-            <Typography variant='h3'>Weather Search</Typography>
-            <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
-            <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
-          </Paper>
-        </Box>
-      </form>
-      {error && <p>{error}</p>}
-      {weatherData && (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
-            <Typography>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
-          </Paper>
-        </Box>
-      )}
     </div>
   );
 }
