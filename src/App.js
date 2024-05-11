@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
+import { Button, Typography, Paper } from '@mui/material';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
+  const [country, setCountry] = useState(null);
+  const [flag, setFlag] = useState(null);
+  const [city, setCity] = useState(null);
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -19,6 +23,13 @@ function WeatherApp() {
   
         const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
         setWeatherData(weatherResponse.data);
+
+        const countryData = geocodingResponse.data.results[0].components.country;
+        const flagData = geocodingResponse.data.results[0].annotations.flag;
+        const cityData = geocodingResponse.data.results[0].components.city;
+        setCountry(countryData);
+        setFlag(flagData);
+        setCity(cityData);
       } else {
         setError('Error: No results found for the location');
       }
@@ -31,13 +42,16 @@ function WeatherApp() {
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
-        <input type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." />
-        <button type="submit">Get Weather</button>
+        <Paper sx={{ width: 200 }}>
+          <Typography>SundeWeather Search</Typography>
+          <input type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." />
+          <Button type="submit">Get Weather</Button>
+        </Paper>
       </form>
       {error && <p>{error}</p>}
       {weatherData && (
         <div>
-          <h2>Weather for {weatherData.geometry.coordinates[1]}, {weatherData.geometry.coordinates[0]}</h2>
+          <h2>Weather for {city}, {country} {flag}</h2>
           <p>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</p>
         </div>
       )}
