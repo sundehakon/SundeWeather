@@ -45,7 +45,7 @@ function WeatherApp() {
       <form onSubmit={handleFormSubmit}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Paper sx={{ width: 400, padding: 7, marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
-            <Typography variant='h4'>Weather Search</Typography>
+            <Typography variant='h3'>Weather Search</Typography>
             <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined'/>
             <Button type="submit" sx={{ marginTop: 3 }}>Get Weather</Button>
           </Paper>
@@ -54,8 +54,8 @@ function WeatherApp() {
       {error && <p>{error}</p>}
       {weatherData && (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7 }}>
-            <Typography variant='h5'>Weather for {city}, {country} {flag}</Typography>
+          <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
             <Typography>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
           </Paper>
         </Box>
