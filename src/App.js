@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import './App.css';
-import { Button, Typography, Paper, Box } from '@mui/material';
+import { Button, Typography, Paper, Box, TextField } from '@mui/material';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -44,19 +44,21 @@ function WeatherApp() {
     <div>
       <form onSubmit={handleFormSubmit}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Paper sx={{ width: 400, padding: 7 }}>
-            <Typography variant='h4'>SundeWeather Search</Typography>
-            <input type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." />
-            <Button type="submit">Get Weather</Button>
+          <Paper sx={{ width: 400, padding: 7, marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
+            <Typography variant='h4'>Weather Search</Typography>
+            <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined'/>
+            <Button type="submit" sx={{ marginTop: 3 }}>Get Weather</Button>
           </Paper>
         </Box>
       </form>
       {error && <p>{error}</p>}
       {weatherData && (
-        <div>
-          <h2>Weather for {city}, {country} {flag}</h2>
-          <p>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</p>
-        </div>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7 }}>
+            <Typography variant='h5'>Weather for {city}, {country} {flag}</Typography>
+            <Typography>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
+          </Paper>
+        </Box>
       )}
     </div>
   );
