@@ -20,7 +20,7 @@ const Particle = () => {
   const options = useMemo(
     () => ({
         background: {
-            color: "#000000"
+            color: "#151515"
           },
           particles: {
             color: { value: "#fff" },

@@ -86,7 +86,12 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
-              <Typography>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
+              {weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code === 'partlycloudy_day' && (
+                <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
+                  <img src='https://camo.githubusercontent.com/34c36040fc5717eee8a5801f2d1702871f58b1f3c0c04ee64c2a68b299e2e407/68747470733a2f2f626d63646e2e6e6c2f6173736574732f776561746865722d69636f6e732f76332e302f66696c6c2f7376672f706172746c792d636c6f7564792d6461792e737667' alt='Partly cloudy' />
+                </Box>
+              )}
+              <Typography sx={{ marginTop: 2 }}>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
             </Paper>
           </Box>
         )}
