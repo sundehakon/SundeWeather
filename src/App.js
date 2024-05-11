@@ -13,6 +13,7 @@ function WeatherApp() {
   const [country, setCountry] = useState(null);
   const [flag, setFlag] = useState(null);
   const [city, setCity] = useState(null);
+  const [formDisabled, setFormDisabled] = useState(false); 
   const { user } = useAuth0();
 
   const handleLocationChange = (event) => {
@@ -21,6 +22,7 @@ function WeatherApp() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setFormDisabled(true);
     try {
       const geocodingResponse = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${process.env.REACT_APP_OPENCAGEDATA_API_KEY}`);
       if (geocodingResponse.data && geocodingResponse.data.results && geocodingResponse.data.results.length > 0) {
@@ -41,6 +43,10 @@ function WeatherApp() {
     } catch (error) {
       console.error('Error fetching weather data:', error);
       setError('Error fetching weather data. Please try again later.');
+    } finally {
+      setTimeout(() => {
+        setFormDisabled(false);
+      }, 10000);
     }
   };
 
@@ -62,15 +68,14 @@ function WeatherApp() {
               Welcome, {user.nickname}!
             </Typography>
           </Box>
-        
         )}
       </Box>
       <form onSubmit={handleFormSubmit}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Paper sx={{ width: 400, padding: 7, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
             <Typography variant='h3'>Weather Search</Typography>
-            <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined'/>
-            <Button type="submit" sx={{ marginTop: 3 }}>Get Weather</Button>
+            <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
+            <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
           </Paper>
         </Box>
       </form>
