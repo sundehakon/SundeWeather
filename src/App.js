@@ -101,6 +101,7 @@ function WeatherApp() {
   const [city, setCity] = useState(null);
   const [archipelago, setArchipelago] = useState(null);
   const [normalizedCity, setNormalizedCity] = useState(null);
+  const [state, setState] = useState(null);
   const [formDisabled, setFormDisabled] = useState(false); 
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
@@ -139,11 +140,13 @@ function WeatherApp() {
         const cityData = geocodingResponse.data.results[0].components.city;
         const archipelagoData = geocodingResponse.data.results[0].components.archipelago;
         const normalizedCityData = geocodingResponse.data.results[0].components._normalized_city;
+        const stateData = geocodingResponse.data.results[0].components.state;
         setCountry(countryData);
         setFlag(flagData);
         setCity(cityData);
         setArchipelago(archipelagoData);
         setNormalizedCity(normalizedCityData);
+        setState(stateData);
   
         if (unit === '˚C') {
           setTemperature(newWeatherData.properties.timeseries[0].data.instant.details.air_temperature);
@@ -215,8 +218,11 @@ function WeatherApp() {
                 {!city && normalizedCity &&
                   <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>
                 }
-                {!city && !normalizedCity && country &&
+                {!city && !normalizedCity && !state && country &&
                   <Typography variant='h4'>Weather for {country} {flag}</Typography>
+                }
+                {!city && !normalizedCity && state &&
+                  <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>
                 }
               </Box>
                 <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
@@ -239,7 +245,7 @@ function WeatherApp() {
         )}
         <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
           <Typography sx={{ color: 'white', marginTop: 2, marginBottom: 1 }} variant='caption'>Data from Yr and OpenCage</Typography>
-          <Typography sx={{ color: 'white', marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.netlify.app/' target='_blank' rel='noreferrer' style={{ color: 'white' }}>Håkon Sunde</a></Typography>
+          <Typography sx={{ color: 'white', marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.tech/' target='_blank' rel='noreferrer' style={{ color: 'white' }}>Håkon Sunde</a></Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, marginBottom: 5 }}>
             <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'><img src='github-white.png' alt='GitHub logo' style={{ height: 32, width: 32 }} /></a>
             <a href='https://twitter.com/lordsunde' target='_blank' rel='noreferrer'><img src='https://raw.githubusercontent.com/jmnote/z-icons/master/svg/twitter.svg' alt='Twitter logo' style={{ height: 32, width: 32 }}/></a>
