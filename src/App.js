@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import './App.css';
-import { Button, Typography, Paper, Box, TextField } from '@mui/material';
+import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './login';
 import LogoutButton from './logout';
@@ -102,10 +102,23 @@ function WeatherApp() {
   const [archipelago, setArchipelago] = useState(null);
   const [normalizedCity, setNormalizedCity] = useState(null);
   const [formDisabled, setFormDisabled] = useState(false); 
+  const [unit, setUnit] = useState('˚C');  
+  const [temperature, setTemperature] = useState(0);
   const { user } = useAuth0();
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
+  };
+
+  const handleUnitChange = (event) => {
+    setUnit(event.target.value);
+
+    if (event.target.value === '˚C') {
+      setTemperature(weatherData.properties.timeseries[0].data.instant.details.air_temperature);
+    } else if (event.target.value === '˚F') {
+      const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9/5 + 32;
+      setTemperature(convertedTemperature);
+    }
   };
 
   const handleFormSubmit = async (event) => {
@@ -118,8 +131,9 @@ function WeatherApp() {
         const { lat, lng } = geocodingResponse.data.results[0].geometry;
   
         const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
-        setWeatherData(weatherResponse.data);
-
+        const newWeatherData = weatherResponse.data;
+        setWeatherData(newWeatherData);
+  
         const countryData = geocodingResponse.data.results[0].components.country;
         const flagData = geocodingResponse.data.results[0].annotations.flag;
         const cityData = geocodingResponse.data.results[0].components.city;
@@ -130,6 +144,13 @@ function WeatherApp() {
         setCity(cityData);
         setArchipelago(archipelagoData);
         setNormalizedCity(normalizedCityData);
+  
+        if (unit === '˚C') {
+          setTemperature(newWeatherData.properties.timeseries[0].data.instant.details.air_temperature);
+        } else if (unit === '˚F') {
+          const convertedTemperature = newWeatherData.properties.timeseries[0].data.instant.details.air_temperature * 9/5 + 32;
+          setTemperature(convertedTemperature);
+        }
       } else {
         setError('Error: No results found for the location');
       }
@@ -147,6 +168,7 @@ function WeatherApp() {
       }, 10000);
     }
   };
+  
 
   return (
     <div>
@@ -200,7 +222,18 @@ function WeatherApp() {
                 <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                   <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
                 </Box>
-                <Typography sx={{ marginTop: 1 }} variant='h4'>{weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
+                <Typography sx={{ marginTop: 1 }} variant='h4'>{temperature} {unit}</Typography>
+                <FormControl>
+                  <RadioGroup
+                    row
+                    value={unit}
+                    onChange={handleUnitChange}
+                    sx={{ marginTop: 2 }}
+                  >
+                    <FormControlLabel value='˚C' control={<Radio />} label='Celsius' />
+                    <FormControlLabel value='˚F' control={<Radio />} label='Fahrenheit' />
+                  </RadioGroup>
+                </FormControl>
             </Paper>
           </Box>
         )}
