@@ -137,6 +137,11 @@ function WeatherApp() {
       console.error('Error fetching weather data:', error);
       setError('Error fetching weather data. Please try again later.');
     } finally {
+      if (user) {
+        setTimeout(() => {
+          setFormDisabled(false);
+        }, 100);
+      }
       setTimeout(() => {
         setFormDisabled(false);
       }, 10000);
