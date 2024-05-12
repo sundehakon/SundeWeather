@@ -11,6 +11,7 @@ https://sundeweather.netlify.app/
 - Fetches and displays weather data for a given location
 - Displays the country flag and city name for the given location
 - Shows the current temperature and weather symbol
+- Built-in celsius and fahrenheit converter
 
 ## Installation
 
