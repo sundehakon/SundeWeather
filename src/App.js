@@ -239,7 +239,7 @@ function WeatherApp() {
         )}
         <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
           <Typography sx={{ color: 'white', marginTop: 2, marginBottom: 1 }} variant='caption'>Data from YR and OpenCage</Typography>
-          <Typography sx={{ color: 'white', marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.netlify.app/' target='_blank' rel='noreferrer'>Håkon Sunde</a></Typography>
+          <Typography sx={{ color: 'white', marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.netlify.app/' target='_blank' rel='noreferrer' style={{ color: 'white' }}>Håkon Sunde</a></Typography>
           <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'><img src='github-white.png' alt='GitHub logo' style={{ height: 32, width: 32, marginBottom: 20 }} /></a>
         </Box>
       </Box>
