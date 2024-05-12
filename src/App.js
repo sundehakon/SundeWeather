@@ -200,7 +200,7 @@ function WeatherApp() {
                 <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                   <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
                 </Box>
-                <Typography sx={{ marginTop: 2 }}>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
+                <Typography sx={{ marginTop: 1 }} variant='h4'>{weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
             </Paper>
           </Box>
         )}
