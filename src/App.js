@@ -175,7 +175,7 @@ function WeatherApp() {
               <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
-              <Typography sx={{ marginTop: 3, fontSize: 10 }}>ps. if weather doesnt show try adding the country to the request...</Typography>
+              <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>ps. if weather doesnt show try adding the country to the request...</Typography>
             </Paper>
           </Box>
         </form>
