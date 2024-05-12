@@ -110,6 +110,7 @@ function WeatherApp() {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setError(null);
     setFormDisabled(true);
     try {
       const geocodingResponse = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${process.env.REACT_APP_OPENCAGEDATA_API_KEY}`);
@@ -166,32 +167,37 @@ function WeatherApp() {
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 7, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
-              <Typography variant='h3'>Weather Search</Typography>
+              <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
             </Paper>
           </Box>
         </form>
-        {error && <p>{error}</p>}
+        {error && <Typography sx={{ textAlign: 'center', color: 'white', marginTop: 2 }}>{error}</Typography>}
         {weatherData && (
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-              {city &&
-                <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
-              }
-              {archipelago &&
-                <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>
-              }
-              {!city && normalizedCity &&
-                <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>
-              }
-              <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
-                <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+              <Box sx={{ textAlign: 'center' }}>
+                {city &&
+                  <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
+                }
+                {archipelago &&
+                  <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>
+                }
+                {!city && normalizedCity &&
+                  <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>
+                }
               </Box>
-              <Typography sx={{ marginTop: 2 }}>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
+                <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
+                  <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+                </Box>
+                <Typography sx={{ marginTop: 2 }}>Current temperature: {weatherData.properties.timeseries[0].data.instant.details.air_temperature}°C</Typography>
             </Paper>
           </Box>
         )}
+        <Box sx={{ textAlign: 'center', marginTop: 2 }}>
+          <Typography sx={{ color: 'white', marginTop: 2, marginBottom: 10 }} variant='caption'>Data from YR and OpenCage</Typography>
+        </Box>
       </Box>
     </div>
   );
