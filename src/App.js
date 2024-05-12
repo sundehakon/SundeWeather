@@ -5,7 +5,6 @@ import { Button, Typography, Paper, Box, TextField } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './login';
 import LogoutButton from './logout';
-import Particle from './Components/Particle';
 
 const symbolMapping = {
   clearsky_day: '/svg/01d.svg',
@@ -78,6 +77,7 @@ function WeatherApp() {
   const [flag, setFlag] = useState(null);
   const [city, setCity] = useState(null);
   const [archipelago, setArchipelago] = useState(null);
+  const [normalizedCity, setNormalizedCity] = useState(null);
   const [formDisabled, setFormDisabled] = useState(false); 
   const { user } = useAuth0();
 
@@ -100,10 +100,12 @@ function WeatherApp() {
         const flagData = geocodingResponse.data.results[0].annotations.flag;
         const cityData = geocodingResponse.data.results[0].components.city;
         const archipelagoData = geocodingResponse.data.results[0].components.archipelago;
+        const normalizedCityData = geocodingResponse.data.results[0].components._normalized_city;
         setCountry(countryData);
         setFlag(flagData);
         setCity(cityData);
         setArchipelago(archipelagoData);
+        setNormalizedCity(normalizedCityData);
       } else {
         setError('Error: No results found for the location');
       }
@@ -119,7 +121,6 @@ function WeatherApp() {
 
   return (
     <div>
-      <Particle />
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
           {!user && 
@@ -157,6 +158,9 @@ function WeatherApp() {
               }
               {archipelago &&
                 <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>
+              }
+              {normalizedCity &&
+                <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>
               }
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
