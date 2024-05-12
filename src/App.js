@@ -159,7 +159,7 @@ function WeatherApp() {
               {archipelago &&
                 <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>
               }
-              {normalizedCity &&
+              {!city && normalizedCity &&
                 <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>
               }
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
