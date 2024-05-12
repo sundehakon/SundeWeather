@@ -171,7 +171,7 @@ function WeatherApp() {
         </Box>
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Paper sx={{ padding: 7, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
+            <Paper sx={{ padding: 7, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
               <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
@@ -200,8 +200,10 @@ function WeatherApp() {
             </Paper>
           </Box>
         )}
-        <Box sx={{ textAlign: 'center', marginTop: 2 }}>
-          <Typography sx={{ color: 'white', marginTop: 2, marginBottom: 10 }} variant='caption'>Data from YR and OpenCage</Typography>
+        <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+          <Typography sx={{ color: 'white', marginTop: 2, marginBottom: 1 }} variant='caption'>Data from YR and OpenCage</Typography>
+          <Typography sx={{ color: 'white', marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.netlify.app/' target='_blank' rel='noreferrer'>Håkon Sunde</a></Typography>
+          <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'><img src='github-white.png' alt='GitHub logo' style={{ height: 32, width: 32, marginBottom: 20 }} /></a>
         </Box>
       </Box>
     </div>
