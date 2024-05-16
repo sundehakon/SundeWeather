@@ -3,7 +3,7 @@
 This is a simple weather application built with React and Material UI. It uses the OpenCage and YR APIs to fetch weather data based on the user's input location.
 
 ## Check It Out!
-https://sundeweather.netlify.app/
+https://sundeweather.software/
 
 ## Features
 
