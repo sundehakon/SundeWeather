@@ -102,6 +102,7 @@ function WeatherApp() {
   const [archipelago, setArchipelago] = useState(null);
   const [normalizedCity, setNormalizedCity] = useState(null);
   const [state, setState] = useState(null);
+  const [continent, setContinent] = useState(null);
   const [formDisabled, setFormDisabled] = useState(false); 
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
@@ -141,12 +142,14 @@ function WeatherApp() {
         const archipelagoData = geocodingResponse.data.results[0].components.archipelago;
         const normalizedCityData = geocodingResponse.data.results[0].components._normalized_city;
         const stateData = geocodingResponse.data.results[0].components.state;
+        const continentData = geocodingResponse.data.results[0].components.continent;
         setCountry(countryData);
         setFlag(flagData);
         setCity(cityData);
         setArchipelago(archipelagoData);
         setNormalizedCity(normalizedCityData);
         setState(stateData);
+        setContinent(continentData);
   
         if (unit === '˚C') {
           setTemperature(newWeatherData.properties.timeseries[0].data.instant.details.air_temperature);
@@ -223,6 +226,9 @@ function WeatherApp() {
                 }
                 {!city && !normalizedCity && state &&
                   <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>
+                }
+                {!city && !normalizedCity && !state && !country && continent &&
+                  <Typography variant='h4'>Weather for {continent} {flag}</Typography>
                 }
               </Box>
                 <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
