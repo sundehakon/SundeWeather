@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import './App.css';
-import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio } from '@mui/material';
+import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './login';
 import LogoutButton from './logout';
 import { symbolMapping } from './Components/SymbolMapping';
+import CloseIcon from '@mui/icons-material/Close';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
-  const [country, setCountry] = useState(null);
+  const [country, setCountry] = useState(null); 
   const [flag, setFlag] = useState(null);
   const [city, setCity] = useState(null);
   const [archipelago, setArchipelago] = useState(null);
@@ -36,6 +37,19 @@ function WeatherApp() {
       const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9/5 + 32;
       setTemperature(convertedTemperature);
     }
+  };
+
+  const handleCardDelete = () => {
+    setWeatherData(null);
+    setCountry(null);
+    setFlag(null);
+    setCity(null);
+    setArchipelago(null);
+    setNormalizedCity(null);
+    setState(null);
+    setContinent(null);
+    setTemperature(0);
+    setLocation('');
   };
 
   const handleFormSubmit = async (event) => {
@@ -74,6 +88,7 @@ function WeatherApp() {
         }
       } else {
         setError('Error: No results found for the location');
+        handleCardDelete();
       }
     } catch (error) {
       console.error('Error fetching weather data:', error);
@@ -122,10 +137,13 @@ function WeatherApp() {
             </Paper>
           </Box>
         </form>
-        {error && <Typography sx={{ textAlign: 'center', color: 'white', marginTop: 2 }}>{error}</Typography>}
+        {error && <Typography sx={{ textAlign: 'center', color: 'red', marginTop: 2 }} variant='h6'>{error}</Typography>}
         {weatherData && (
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <IconButton sx={{ alignSelf: 'flex-end', marginBottom: 2 }} onClick={handleCardDelete}>
+              <CloseIcon />
+            </IconButton>
               <Box sx={{ textAlign: 'center' }}>
                 {city &&
                   <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
