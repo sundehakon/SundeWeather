@@ -36,7 +36,8 @@ function WeatherApp() {
       setTemperature(weatherData.properties.timeseries[0].data.instant.details.air_temperature);
     } else if (event.target.value === '˚F') {
       const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9/5 + 32;
-      setTemperature(convertedTemperature);
+      const formattedTemperature = convertedTemperature.toFixed(2);
+      setTemperature(parseFloat(formattedTemperature));
     }
   };
 
