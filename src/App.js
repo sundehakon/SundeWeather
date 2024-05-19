@@ -8,6 +8,7 @@ import LogoutButton from './logout';
 import { symbolMapping } from './Components/SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -21,6 +22,7 @@ function WeatherApp() {
   const [state, setState] = useState(null);
   const [continent, setContinent] = useState(null);
   const [formatted, setFormatted] = useState(null);
+  const [favoriteClicked, setFavoriteClicked] = useState(null);
   const [formDisabled, setFormDisabled] = useState(false); 
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
@@ -113,7 +115,6 @@ function WeatherApp() {
   
   const handleFavorite = () => {
     const favoriteData = {
-      location: location,
       weatherData: weatherData,
       country: country,
       flag: flag,
@@ -123,15 +124,18 @@ function WeatherApp() {
       state: state,
       continent: continent,
       formatted: formatted,
-      temperature: temperature,
-      unit: unit
     };
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     favorites.push(favoriteData);
     localStorage.setItem('favorites', JSON.stringify(favorites));
+    setFavoriteClicked(true);
 
     console.log('Favorites: ', favorites);
-  }
+  };
+
+  const handleRemoveFavorite = () => {
+
+  }:
 
   return (
     <div>
@@ -169,9 +173,16 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                {!favoriteClicked &&
                 <IconButton onClick={handleFavorite}>
                   <FavoriteBorderIcon />
                 </IconButton>
+                }
+                {favoriteClicked &&
+                  <IconButton>
+                    <FavoriteIcon />
+                  </IconButton>
+                }
                 <IconButton onClick={handleCardDelete}>
                   <CloseIcon />
                 </IconButton>
