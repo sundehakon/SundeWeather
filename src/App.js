@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import './App.css';
 import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
@@ -22,11 +22,16 @@ function WeatherApp() {
   const [state, setState] = useState(null);
   const [continent, setContinent] = useState(null);
   const [formatted, setFormatted] = useState(null);
-  const [favoriteClicked, setFavoriteClicked] = useState(null);
   const [formDisabled, setFormDisabled] = useState(false); 
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
+  const [favorites, setFavorites] = useState([]);
   const { user } = useAuth0();
+
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setFavorites(storedFavorites);
+  }, []);
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -115,7 +120,8 @@ function WeatherApp() {
   
   const handleFavorite = () => {
     const favoriteData = {
-      weatherData: weatherData,
+      lat: weatherData.geometry.coordinates[1],
+      lon: weatherData.geometry.coordinates[0],
       country: country,
       flag: flag,
       city: city,
@@ -125,17 +131,26 @@ function WeatherApp() {
       continent: continent,
       formatted: formatted,
     };
-    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    favorites.push(favoriteData);
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    setFavoriteClicked(true);
-
-    console.log('Favorites: ', favorites);
+    const newFavorites = [...favorites, favoriteData];
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    setFavorites(newFavorites);
+    console.log(favorites);
   };
 
   const handleRemoveFavorite = () => {
+    const newFavorites = favorites.filter((favorite) => 
+      !(favorite.lat === weatherData.geometry.coordinates[1] && favorite.lon === weatherData.geometry.coordinates[0])
+    );
+    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    setFavorites(newFavorites);
+    console.log(favorites);
+  };
 
-  }:
+  const isFavorite = () => {
+    return favorites.some(favorite => 
+      favorite.lat === weatherData.geometry.coordinates[1] && favorite.lon === weatherData.geometry.coordinates[0]
+    );
+  };
 
   return (
     <div>
@@ -173,13 +188,13 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                {!favoriteClicked &&
+                {!isFavorite() &&
                 <IconButton onClick={handleFavorite}>
                   <FavoriteBorderIcon />
                 </IconButton>
                 }
-                {favoriteClicked &&
-                  <IconButton>
+                {isFavorite() &&
+                  <IconButton onClick={handleRemoveFavorite}>
                     <FavoriteIcon />
                   </IconButton>
                 }
