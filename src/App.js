@@ -7,6 +7,7 @@ import LoginButton from './login';
 import LogoutButton from './logout';
 import { symbolMapping } from './Components/SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -110,6 +111,27 @@ function WeatherApp() {
     }
   };
   
+  const handleFavorite = () => {
+    const favoriteData = {
+      location: location,
+      weatherData: weatherData,
+      country: country,
+      flag: flag,
+      city: city,
+      archipelago: archipelago,
+      normalizedCity: normalizedCity,
+      state: state,
+      continent: continent,
+      formatted: formatted,
+      temperature: temperature,
+      unit: unit
+    };
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites.push(favoriteData);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+
+    console.log('Favorites: ', favorites);
+  }
 
   return (
     <div>
@@ -146,9 +168,14 @@ function WeatherApp() {
         {weatherData && (
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <IconButton sx={{ alignSelf: 'flex-end', marginBottom: 2 }} onClick={handleCardDelete}>
-              <CloseIcon />
-            </IconButton>
+              <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                <IconButton onClick={handleFavorite}>
+                  <FavoriteBorderIcon />
+                </IconButton>
+                <IconButton onClick={handleCardDelete}>
+                  <CloseIcon />
+                </IconButton>
+            </Box>
               <Box sx={{ textAlign: 'center' }}>
                 {city &&
                   <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
