@@ -134,7 +134,6 @@ function WeatherApp() {
     const newFavorites = [...favorites, favoriteData];
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setFavorites(newFavorites);
-    console.log(favorites);
   };
 
   const handleRemoveFavorite = () => {
@@ -143,7 +142,6 @@ function WeatherApp() {
     );
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setFavorites(newFavorites);
-    console.log(favorites);
   };
 
   const isFavorite = () => {
@@ -180,6 +178,11 @@ function WeatherApp() {
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesnt show try adding the country to the request...</Typography>
+              {favorites.map(function(data) {
+                return (
+                  <Typography>{data.city}</Typography>
+                )
+              })}
             </Paper>
           </Box>
         </form>
