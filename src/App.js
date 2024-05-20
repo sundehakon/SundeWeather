@@ -26,12 +26,15 @@ function WeatherApp() {
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
-  const { user } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    setFavorites(storedFavorites);
-  }, []);
+    if (isAuthenticated) {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+      const userFavorites = storedFavorites.filter(fav => fav.userId === user.sub);
+      setFavorites(userFavorites);
+    }
+  }, [isAuthenticated, user]);
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -107,21 +110,16 @@ function WeatherApp() {
       console.error('Error fetching weather data:', error);
       setError('Error fetching weather data. Please try again later.');
     } finally {
-      if (user) {
-        setTimeout(() => {
-          setFormDisabled(false);
-        }, 100);
-      }
-      setTimeout(() => {
-        setFormDisabled(false);
-      }, 10000);
+      setFormDisabled(false);
     }
   };
   
   const handleFavorite = () => {
+    if (!isAuthenticated) return;
     const favoriteData = {
       lat: weatherData.geometry.coordinates[1],
       lon: weatherData.geometry.coordinates[0],
+      userId: user.sub,
       country: country,
       flag: flag,
       city: city,
@@ -131,16 +129,22 @@ function WeatherApp() {
       continent: continent,
       formatted: formatted,
     };
-    const newFavorites = [...favorites, favoriteData];
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const newFavorites = [...storedFavorites, favoriteData];
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
-    setFavorites(newFavorites);
+    setFavorites(newFavorites.filter(fav => fav.userId === user.sub));
   };
 
   const handleRemoveFavorite = () => {
+    if (!isAuthenticated) return;
     const newFavorites = favorites.filter((favorite) => 
       !(favorite.lat === weatherData.geometry.coordinates[1] && favorite.lon === weatherData.geometry.coordinates[0])
     );
-    localStorage.setItem('favorites', JSON.stringify(newFavorites));
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const updatedFavorites = storedFavorites.filter(fav => 
+      !(fav.lat === weatherData.geometry.coordinates[1] && fav.lon === weatherData.geometry.coordinates[0] && fav.userId === user.sub)
+    );
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     setFavorites(newFavorites);
   };
 
@@ -154,20 +158,14 @@ function WeatherApp() {
     <div>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
-          {!user && 
-            <LoginButton />
-          }
-          {user &&
-            <LogoutButton />
-          }
+          {!isAuthenticated && <LoginButton />}
+          {isAuthenticated && <LogoutButton />}
         </Box>
         <Box>
-          {user && (
-            <Box sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 2 }}>
+          {isAuthenticated && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 2 }}>
               <img src={user.picture} alt='User profile' style={{ borderRadius: '50%', height: 64, width: 64 }} />
-              <Typography sx={{ marginTop: 1, color: 'white' }}>
-                Welcome, {user.nickname}!
-              </Typography>
+              <Typography sx={{ marginTop: 1, color: 'white' }}>Welcome, {user.nickname}!</Typography>
             </Box>
           )}
         </Box>
@@ -178,11 +176,12 @@ function WeatherApp() {
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesnt show try adding the country to the request...</Typography>
-              {favorites.map(function(data) {
-                return (
+              {favorites.map((data, index) => (
+                <Box key={index} sx={{ display: 'flex', gap: 1 }}>
                   <Typography>{data.city}</Typography>
-                )
-              })}
+                  <Typography>{data.flag}</Typography>
+                </Box>
+              ))}
             </Paper>
           </Box>
         </form>
@@ -191,58 +190,29 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                {!isFavorite() &&
-                <IconButton onClick={handleFavorite}>
-                  <FavoriteBorderIcon />
-                </IconButton>
-                }
-                {isFavorite() &&
-                  <IconButton onClick={handleRemoveFavorite}>
-                    <FavoriteIcon />
-                  </IconButton>
-                }
-                <IconButton onClick={handleCardDelete}>
-                  <CloseIcon />
-                </IconButton>
-            </Box>
-              <Box sx={{ textAlign: 'center' }}>
-                {city &&
-                  <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>
-                }
-                {archipelago &&
-                  <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>
-                }
-                {!city && normalizedCity &&
-                  <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>
-                }
-                {!city && !normalizedCity && !state && country &&
-                  <Typography variant='h4'>Weather for {country} {flag}</Typography>
-                }
-                {!city && !normalizedCity && state &&
-                  <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>
-                }
-                {!city && !normalizedCity && !state && !country && continent &&
-                  <Typography variant='h4'>Weather for {continent} {flag}</Typography>
-                }
-                {!city && !normalizedCity && !state && !country && !continent && formatted &&
-                  <Typography variant='h4'>Weather for {formatted} {flag}</Typography>
-                }
+                {!isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
+                {isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon /></IconButton>}
+                <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
-                <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
-                  <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
-                </Box>
-                <Typography sx={{ marginTop: 1 }} variant='h4'>{temperature} {unit}</Typography>
-                <FormControl>
-                  <RadioGroup
-                    row
-                    value={unit}
-                    onChange={handleUnitChange}
-                    sx={{ marginTop: 2 }}
-                  >
-                    <FormControlLabel value='˚C' control={<Radio />} label='Celsius' />
-                    <FormControlLabel value='˚F' control={<Radio />} label='Fahrenheit' />
-                  </RadioGroup>
-                </FormControl>
+              <Box sx={{ textAlign: 'center' }}>
+                {city && <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>}
+                {archipelago && <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>}
+                {!city && normalizedCity && <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>}
+                {!city && !normalizedCity && !state && country && <Typography variant='h4'>Weather for {country} {flag}</Typography>}
+                {!city && !normalizedCity && state && <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>}
+                {!city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>Weather for {continent} {flag}</Typography>}
+                {!city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>Weather for {formatted} {flag}</Typography>}
+              </Box>
+              <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
+                <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+              </Box>
+              <Typography sx={{ marginTop: 1 }} variant='h4'>{temperature} {unit}</Typography>
+              <FormControl>
+                <RadioGroup row value={unit} onChange={handleUnitChange} sx={{ marginTop: 2 }}>
+                  <FormControlLabel value='˚C' control={<Radio />} label='Celsius' />
+                  <FormControlLabel value='˚F' control={<Radio />} label='Fahrenheit' />
+                </RadioGroup>
+              </FormControl>
             </Paper>
           </Box>
         )}
