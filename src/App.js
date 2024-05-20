@@ -133,7 +133,6 @@ function WeatherApp() {
     const newFavorites = [...storedFavorites, favoriteData];
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setFavorites(newFavorites.filter(fav => fav.userId === user.sub));
-    console.log(favorites);
   };
 
   const handleRemoveFavorite = () => {
@@ -178,11 +177,11 @@ function WeatherApp() {
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesnt show try adding the country to the request...</Typography>
               <Typography sx={{ display: 'flex', gap: 1, marginTop: 2 }} variant='h6'>
-                    Favorites
-                    <FavoriteIcon sx={{ color: '#be1931' }}/>
-                  </Typography>
-              {favorites.map((data, index) => (
-                <div>
+                  Favorites
+                  <FavoriteIcon sx={{ color: '#be1931' }}/>
+              </Typography>
+              {favorites.length > 0 ? (
+                favorites.map((data, index) => (
                   <Box key={index} sx={{ display: 'flex', gap: 1 }}>
                     {data.city && <Typography>- {data.city} {data.flag}</Typography>}
                     {data.archipelago && <Typography>- {data.archipelago} {data.flag}</Typography>}
@@ -192,8 +191,10 @@ function WeatherApp() {
                     {!data.city && !data.normalizedCity && !data.state && !data.country && data.continent && <Typography>- {data.continent} {data.flag}</Typography>}
                     {!data.city && !data.normalizedCity && !data.state && !data.country && !data.continent && data.formatted && <Typography>- {data.formatted} {data.flag}</Typography>}
                   </Box>
-                </div>
-              ))}
+                ))
+              ) : (
+                <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Click heart on location to add to favorites</Typography>
+              )}
             </Paper>
           </Box>
         </form>
@@ -202,8 +203,8 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                {isAuthenticated && !isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
-                {isAuthenticated && isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }}/></IconButton>}
+                {!isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
+                {isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }}/></IconButton>}
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
