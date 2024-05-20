@@ -26,7 +26,6 @@ function WeatherApp() {
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
-  const [isBlackTheme, setIsBlackTheme] = useState(true);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
@@ -160,12 +159,8 @@ function WeatherApp() {
     setLocation(locationString);
   };
 
-  const handleColorModeClick = () => {
-    setIsBlackTheme(!isBlackTheme);
-  };
-
   return (
-    <div className={`container ${isBlackTheme ? 'black-theme' : 'white-theme'}`}>
+    <div>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
           {!isAuthenticated && <LoginButton />}
