@@ -4,7 +4,7 @@
 
 html {
   --dot-bg: rgb(0, 0, 0);
-  --dot-color: white;
+  --dot-color: rgb(255, 255, 255);
   --dot-size: 1px;
   --dot-space: 44px;
 	background:

@@ -26,6 +26,7 @@ function WeatherApp() {
   const [unit, setUnit] = useState('˚C');  
   const [temperature, setTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
+  const [isBlackTheme, setIsBlackTheme] = useState(true);
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
@@ -159,8 +160,12 @@ function WeatherApp() {
     setLocation(locationString);
   };
 
+  const handleColorModeClick = () => {
+    setIsBlackTheme(!isBlackTheme);
+  };
+
   return (
-    <div>
+    <div className={`container ${isBlackTheme ? 'black-theme' : 'white-theme'}`}>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
           {!isAuthenticated && <LoginButton />}
@@ -178,7 +183,7 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 9, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
               <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
-              <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='outlined' disabled={formDisabled} />
+              <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesn't show, try adding the country to the request...</Typography>
               {isAuthenticated ? (
