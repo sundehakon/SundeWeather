@@ -31,6 +31,7 @@ function WeatherApp() {
   const [temperature, setTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [open, setOpen] = useState(false);
+  const [displayFlag, setDisplayFlag] = useState(true);
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
   });
@@ -223,7 +224,8 @@ function WeatherApp() {
                     favorites.map((data, index) => (
                       <Box key={index} sx={{ display: 'flex' }}>
                         <Typography onClick={() => handleFavoriteClick(data)} sx={{ cursor: 'pointer' }}>
-                          - {data.city || data.archipelago || data.normalizedCity || data.state || data.country || data.continent || data.formatted} {data.flag}
+                          - {data.city || data.archipelago || data.normalizedCity || data.state || data.country || data.continent || data.formatted} 
+                          {displayFlag && data.flag ? ` ${data.flag}` : ''}
                         </Typography>
                       </Box>
                     ))
@@ -247,13 +249,20 @@ function WeatherApp() {
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
-                {city && <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>}
-                {archipelago && <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>}
-                {!city && normalizedCity && <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>}
-                {!city && !normalizedCity && !state && country && <Typography variant='h4'>Weather for {country} {flag}</Typography>}
-                {!city && !normalizedCity && state && <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>}
-                {!city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>Weather for {continent} {flag}</Typography>}
-                {!city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>Weather for {formatted} {flag}</Typography>}
+                {displayFlag && city && <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>}
+                {displayFlag && archipelago && <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>}
+                {displayFlag && !city && normalizedCity && <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>Weather for {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>Weather for {continent} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>Weather for {formatted} {flag}</Typography>}
+                {!displayFlag && city && <Typography variant='h4'>Weather for {city}, {country}</Typography>}
+                {!displayFlag && archipelago && <Typography variant='h4'>Weather for {archipelago}, {country}</Typography>}
+                {!displayFlag && !city && normalizedCity && <Typography variant='h4'>Weather for {normalizedCity}, {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>Weather for {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>Weather for {state}, {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>Weather for {continent}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>Weather for {formatted}</Typography>}
               </Box>
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
@@ -280,7 +289,7 @@ function WeatherApp() {
           </Box>
         </Box>
       </Box>
-      <SettingsModal open={open} handleClose={handleClose} />
+      <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag}/>
     </div>
   );
 }
