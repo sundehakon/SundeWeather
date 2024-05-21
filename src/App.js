@@ -194,14 +194,14 @@ function WeatherApp() {
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 9, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
+              <IconButton onClick={toggleLightMode} sx={{ alignSelf: 'flex-end', marginBottom: 1 }}>
+                {!isLightMode && <Brightness4Icon />}
+                {isLightMode && <Brightness7Icon />}
+              </IconButton>
               <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesn't show, try adding the country to the request...</Typography>
-              <IconButton onClick={toggleLightMode}>
-                {!isLightMode && <Brightness4Icon />}
-                {isLightMode && <Brightness7Icon />}
-              </IconButton>
               {isAuthenticated ? (
                 <>
                   <Typography sx={{ display: 'flex', gap: 1, marginTop: 2 }} variant='h6'>
@@ -261,7 +261,10 @@ function WeatherApp() {
           <Typography sx={{ marginTop: 2, marginBottom: 1 }} variant='caption'>Data from Yr and OpenCage</Typography>
           <Typography sx={{ marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.tech/' target='_blank' rel='noreferrer' style={{ color: isLightMode ? 'black' : 'white' }}>Håkon Sunde</a></Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, marginBottom: 5 }}>
-            <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'><img src='github-white.png' alt='GitHub logo' style={{ height: 32, width: 32 }} /></a>
+            <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'>
+              {!isLightMode && <img src='github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32, color: 'white' }} />}
+              {isLightMode && <img src='github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
+            </a>
             <a href='https://twitter.com/lordsunde' target='_blank' rel='noreferrer'><img src='https://raw.githubusercontent.com/jmnote/z-icons/master/svg/twitter.svg' alt='Twitter logo' style={{ height: 32, width: 32 }} /></a>
           </Box>
         </Box>
