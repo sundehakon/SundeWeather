@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import SettingsModal from './Components/SettingsModal';
 import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './login';
@@ -275,6 +276,7 @@ function WeatherApp() {
           </Box>
         </Box>
       </Box>
+      <SettingsModal />
     </div>
   );
 }
