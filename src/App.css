@@ -2,15 +2,41 @@
   text-align: center;
 }
 
-html {
+:root {
   --dot-bg: rgb(0, 0, 0);
   --dot-color: rgb(255, 255, 255);
   --dot-size: 1px;
   --dot-space: 44px;
-	background:
-		linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-		linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-		var(--dot-color);;
+  --text-color: white;
+  background:
+    linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    var(--dot-color);
+  color: var(--text-color); 
+}
+
+.light-mode {
+  --dot-bg: rgb(255, 255, 255);
+  --dot-color: rgb(0, 0, 0);
+  --text-color: black; 
+  background:
+    linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    var(--dot-color);
+  color: var(--text-color); 
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.MuiPaper-root {
+  background-color: var(--paper-background);
+}
+
+.MuiButton-root {
+  background-color: var(--button-background);
 }
 
 .App-logo {
@@ -32,7 +58,7 @@ html {
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--text-color);
 }
 
 .App-link {
