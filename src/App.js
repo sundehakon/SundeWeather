@@ -11,6 +11,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 function WeatherApp() {
   const [location, setLocation] = useState('');
@@ -193,11 +194,16 @@ function WeatherApp() {
         </Box>
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Paper sx={{ padding: 9, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7 }}>
-              <IconButton onClick={toggleLightMode} sx={{ alignSelf: 'flex-end', marginBottom: 1 }}>
-                {!isLightMode && <Brightness4Icon />}
-                {isLightMode && <Brightness7Icon />}
-              </IconButton>
+            <Paper sx={{ padding: 9, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
+              <Box sx={{ alignSelf: 'flex-end', marginBottom: 1 }}>
+                <IconButton onClick={toggleLightMode}>
+                  {!isLightMode && <Brightness4Icon />}
+                  {isLightMode && <Brightness7Icon />}
+                </IconButton>
+                <IconButton>
+                  <SettingsIcon />
+                </IconButton>
+              </Box>
               <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
@@ -229,7 +235,7 @@ function WeatherApp() {
         {error && <Typography sx={{ textAlign: 'center', color: 'red', marginTop: 2 }} variant='h6'>{error}</Typography>}
         {weatherData && (
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+            <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3 }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
                 {isAuthenticated && !isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
                 {isAuthenticated && isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }} /></IconButton>}
