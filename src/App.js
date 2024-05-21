@@ -268,7 +268,7 @@ function WeatherApp() {
           <Typography sx={{ marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.tech/' target='_blank' rel='noreferrer' style={{ color: isLightMode ? 'black' : 'white' }}>Håkon Sunde</a></Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, marginBottom: 5 }}>
             <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'>
-              {!isLightMode && <img src='github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32, color: 'white' }} />}
+              {!isLightMode && <img src='svgrepo-github-white.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
               {isLightMode && <img src='github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
             </a>
             <a href='https://twitter.com/lordsunde' target='_blank' rel='noreferrer'><img src='https://raw.githubusercontent.com/jmnote/z-icons/master/svg/twitter.svg' alt='Twitter logo' style={{ height: 32, width: 32 }} /></a>
