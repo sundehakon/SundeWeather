@@ -30,6 +30,7 @@ function WeatherApp() {
   const [unit, setUnit] = useState('˚C');
   const [temperature, setTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
+  const [open, setOpen] = useState(false);
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
   });
@@ -178,6 +179,9 @@ function WeatherApp() {
     localStorage.setItem('isLightMode', newMode);
   };
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <div>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
@@ -201,7 +205,7 @@ function WeatherApp() {
                   {!isLightMode && <Brightness4Icon />}
                   {isLightMode && <Brightness7Icon />}
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={handleOpen}>
                   <SettingsIcon />
                 </IconButton>
               </Box>
@@ -276,7 +280,7 @@ function WeatherApp() {
           </Box>
         </Box>
       </Box>
-      <SettingsModal />
+      <SettingsModal open={open} handleClose={handleClose}/>
     </div>
   );
 }
