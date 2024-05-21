@@ -11,6 +11,7 @@ const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, display
     };
 
     return (
+        // TODO: Add support for multiple languages
         <Modal
             open={open}
             onClose={handleClose}
