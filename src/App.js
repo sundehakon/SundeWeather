@@ -186,8 +186,8 @@ function WeatherApp() {
     <div>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
-          {!isAuthenticated && <LoginButton />}
-          {isAuthenticated && <LogoutButton />}
+          {!isAuthenticated && <LoginButton isLightMode={isLightMode}/>}
+          {isAuthenticated && <LogoutButton isLightMode={isLightMode}/>}
         </Box>
         <Box>
           {isAuthenticated && (
@@ -280,7 +280,7 @@ function WeatherApp() {
           </Box>
         </Box>
       </Box>
-      <SettingsModal open={open} handleClose={handleClose}/>
+      <SettingsModal open={open} handleClose={handleClose} />
     </div>
   );
 }
