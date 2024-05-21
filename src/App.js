@@ -32,6 +32,7 @@ function WeatherApp() {
   const [favorites, setFavorites] = useState([]);
   const [open, setOpen] = useState(false);
   const [displayFlag, setDisplayFlag] = useState(true);
+  const [displayFavorites, setDisplayFavorites] = useState(true);
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
   });
@@ -214,28 +215,30 @@ function WeatherApp() {
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesn't show, try adding the country to the request...</Typography>
-              {isAuthenticated ? (
-                <>
-                  <Typography sx={{ display: 'flex', gap: 1, marginTop: 2 }} variant='h6'>
-                    Favorites
-                    <FavoriteIcon sx={{ color: '#be1931' }} />
-                  </Typography>
-                  {favorites.length > 0 ? (
-                    favorites.map((data, index) => (
-                      <Box key={index} sx={{ display: 'flex' }}>
-                        <Typography onClick={() => handleFavoriteClick(data)} sx={{ cursor: 'pointer' }}>
-                          - {data.city || data.archipelago || data.normalizedCity || data.state || data.country || data.continent || data.formatted} 
-                          {displayFlag && data.flag ? ` ${data.flag}` : ''}
-                        </Typography>
-                      </Box>
-                    ))
-                  ) : (
-                    <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Click heart on location to add to favorites</Typography>
-                  )}
-                </>
-              ) : (
-                <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Login to save favorites</Typography>
-              )}
+              {displayFavorites ? (
+                isAuthenticated ? (
+                  <>
+                    <Typography sx={{ display: 'flex', gap: 1, marginTop: 2 }} variant='h6'>
+                      Favorites
+                      <FavoriteIcon sx={{ color: '#be1931' }} />
+                    </Typography>
+                    {favorites.length > 0 ? (
+                      favorites.map((data, index) => (
+                        <Box key={index} sx={{ display: 'flex' }}>
+                          <Typography onClick={() => handleFavoriteClick(data)} sx={{ cursor: 'pointer' }}>
+                            - {data.city || data.archipelago || data.normalizedCity || data.state || data.country || data.continent || data.formatted} 
+                            {displayFlag && data.flag ? ` ${data.flag}` : ''}
+                          </Typography>
+                        </Box>
+                      ))
+                    ) : (
+                      <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Click heart on location to add to favorites</Typography>
+                    )}
+                  </>
+                ) : (
+                  <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Login to save favorites</Typography>
+                )
+              ) : null}
             </Paper>
           </Box>
         </form>
@@ -244,8 +247,8 @@ function WeatherApp() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3 }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-                {isAuthenticated && !isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
-                {isAuthenticated && isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }} /></IconButton>}
+                {displayFavorites && isAuthenticated && !isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
+                {displayFavorites && isAuthenticated && isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }} /></IconButton>}
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
@@ -289,7 +292,7 @@ function WeatherApp() {
           </Box>
         </Box>
       </Box>
-      <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag}/>
+      <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>
     </div>
   );
 }
