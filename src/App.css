@@ -31,14 +31,6 @@ body {
   color: var(--text-color);
 }
 
-.MuiPaper-root {
-  background-color: var(--paper-background);
-}
-
-.MuiButton-root {
-  background-color: var(--button-background);
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
