@@ -213,7 +213,7 @@ function WeatherApp() {
                   <SettingsIcon />
                 </IconButton>
               </Box>
-              <Typography variant='h3' sx={{ textAlign: 'center' }}>Weather Search</Typography>
+              <Typography variant='h3' sx={{ textAlign: 'center' }}>{t('title')}</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesn't show, try adding the country to the request...</Typography>
