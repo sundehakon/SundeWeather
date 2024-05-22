@@ -1,4 +1,5 @@
 import { Modal, Typography, Box, Switch } from '@mui/material';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, displayFavorites, setDisplayFavorites }) => {
 
@@ -11,7 +12,6 @@ const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, display
     };
 
     return (
-        // TODO: Add support for multiple languages
         <Modal
             open={open}
             onClose={handleClose}
@@ -28,6 +28,7 @@ const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, display
                 borderRadius: 7
             }}>
                 <Typography variant='h5' sx={{ textAlign: 'center', marginBottom: 1 }}>Settings</Typography>
+                <LanguageSwitcher />
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography>Display Country Flag?</Typography>
