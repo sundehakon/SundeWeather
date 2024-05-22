@@ -16,7 +16,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 function WeatherApp() {
-  const formatDate = (isoString) => {
+  const formatDateEN = (isoString) => {
     const date = new Date(isoString);
     const options = { 
       weekday: 'long', 
@@ -24,12 +24,23 @@ function WeatherApp() {
       month: 'long', 
       day: 'numeric', 
       hour: 'numeric', 
-      minute: 'numeric', 
-      second: 'numeric', 
-      timeZoneName: 'short' 
+      minute: 'numeric'
     };
     return new Intl.DateTimeFormat('en-US', options).format(date);
   };
+
+  const formatDateNO = (isoString) => {
+    const date = new Date(isoString);
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric'
+    };
+    return new Intl.DateTimeFormat('no-NO', options).format(date);
+  };  
 
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
@@ -50,7 +61,7 @@ function WeatherApp() {
   const [displayFlag, setDisplayFlag] = useState(true);
   const [displayFavorites, setDisplayFavorites] = useState(true);
   const [time, setTime] = useState(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
   });
@@ -275,8 +286,13 @@ function WeatherApp() {
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
-                {time &&
-                  <Typography>{formatDate(time)}</Typography>
+                {i18n.language === 'en' && time &&
+                  <Typography>{formatDateEN(time)}</Typography>
+                }
+                {i18n.language === 'no' && time &&
+                <div>
+                  <Typography>{formatDateNO(time)}</Typography>
+                </div>
                 }
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
                 {displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country} {flag}</Typography>}
