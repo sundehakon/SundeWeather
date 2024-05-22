@@ -1,4 +1,15 @@
 {
     "title": "Weather Search",
-    "button": "Get Weather"
+    "button": "Get Weather",
+    "input": "Enter Location...",
+    "welcome": "Welcome, ",
+    "login": "Log In",
+    "logout": "Log Out",
+    "caption": "If weather doesn't show, try adding the country to the request...",
+    "favoritesLogin": "Login to save favorites",
+    "favorites": "Favorites",
+    "favoritesMessage": "Click heart on location to add to favorites",
+    "weather": "Weather for",
+    "data": "Data from Yr and OpenCage",
+    "credit": "Website created by"
 }

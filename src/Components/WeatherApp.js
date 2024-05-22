@@ -197,7 +197,7 @@ function WeatherApp() {
           {isAuthenticated && (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 2 }}>
               <img src={user.picture} alt='User profile' style={{ borderRadius: '50%', height: 64, width: 64 }} />
-              <Typography sx={{ marginTop: 1 }}>Welcome, {user.nickname}!</Typography>
+              <Typography sx={{ marginTop: 1 }}>{t('welcome')} {user.nickname}!</Typography>
             </Box>
           )}
         </Box>
@@ -214,14 +214,14 @@ function WeatherApp() {
                 </IconButton>
               </Box>
               <Typography variant='h3' sx={{ textAlign: 'center' }}>{t('title')}</Typography>
-              <TextField type="text" value={location} onChange={handleLocationChange} placeholder="Enter location..." sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
-              <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>Get Weather</Button>
-              <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>If weather doesn't show, try adding the country to the request...</Typography>
+              <TextField type="text" value={location} onChange={handleLocationChange} placeholder={t('input')} sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
+              <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>{t('button')}</Button>
+              <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>{t('caption')}</Typography>
               {displayFavorites ? (
                 isAuthenticated ? (
                   <>
                     <Typography sx={{ display: 'flex', gap: 1, marginTop: 2 }} variant='h6'>
-                      Favorites
+                      {t('favorites')}
                       <FavoriteIcon sx={{ color: '#be1931' }} />
                     </Typography>
                     {favorites.length > 0 ? (
@@ -234,11 +234,11 @@ function WeatherApp() {
                         </Box>
                       ))
                     ) : (
-                      <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Click heart on location to add to favorites</Typography>
+                      <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>{t('favoritesMessage')}</Typography>
                     )}
                   </>
                 ) : (
-                  <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>Login to save favorites</Typography>
+                  <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>{t('favoritesLogin')}</Typography>
                 )
               ) : null}
             </Paper>
@@ -254,20 +254,20 @@ function WeatherApp() {
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
-                {displayFlag && city && <Typography variant='h4'>Weather for {city}, {country} {flag}</Typography>}
-                {displayFlag && archipelago && <Typography variant='h4'>Weather for {archipelago}, {country} {flag}</Typography>}
-                {displayFlag && !city && normalizedCity && <Typography variant='h4'>Weather for {normalizedCity}, {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>Weather for {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>Weather for {state}, {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>Weather for {continent} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>Weather for {formatted} {flag}</Typography>}
-                {!displayFlag && city && <Typography variant='h4'>Weather for {city}, {country}</Typography>}
-                {!displayFlag && archipelago && <Typography variant='h4'>Weather for {archipelago}, {country}</Typography>}
-                {!displayFlag && !city && normalizedCity && <Typography variant='h4'>Weather for {normalizedCity}, {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>Weather for {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>Weather for {state}, {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>Weather for {continent}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>Weather for {formatted}</Typography>}
+                {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
+                {displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country} {flag}</Typography>}
+                {displayFlag && !city && normalizedCity && <Typography variant='h4'>{('weather')} {normalizedCity}, {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{('weather')} {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{('weather')} {continent} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{('weather')} {formatted} {flag}</Typography>}
+                {!displayFlag && city && <Typography variant='h4'>{('weather')} {city}, {country}</Typography>}
+                {!displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country}</Typography>}
+                {!displayFlag && !city && normalizedCity && <Typography variant='h4'>{('weather')} {normalizedCity}, {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{('weather')} {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{('weather')} {continent}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{('weather')} {formatted}</Typography>}
               </Box>
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
@@ -283,12 +283,12 @@ function WeatherApp() {
           </Box>
         )}
         <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-          <Typography sx={{ marginTop: 2, marginBottom: 1 }} variant='caption'>Data from Yr and OpenCage</Typography>
-          <Typography sx={{ marginBottom: 2 }} variant='caption'>Website created by <a href='https://sundehakon.tech/' target='_blank' rel='noreferrer' style={{ color: isLightMode ? 'black' : 'white' }}>Håkon Sunde</a></Typography>
+          <Typography sx={{ marginTop: 2, marginBottom: 1 }} variant='caption'>{t('data')}</Typography>
+          <Typography sx={{ marginBottom: 2 }} variant='caption'>{t('credit')} <a href='https://sundehakon.tech/' target='_blank' rel='noreferrer' style={{ color: isLightMode ? 'black' : 'white' }}>Håkon Sunde</a></Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, marginBottom: 5 }}>
             <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'>
-              {!isLightMode && <img src='svgrepo-github-white.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
-              {isLightMode && <img src='github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
+              {!isLightMode && <img src='/images/svgrepo-github-white.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
+              {isLightMode && <img src='/images/github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
             </a>
             <a href='https://twitter.com/lordsunde' target='_blank' rel='noreferrer'><img src='https://raw.githubusercontent.com/jmnote/z-icons/master/svg/twitter.svg' alt='Twitter logo' style={{ height: 32, width: 32 }} /></a>
           </Box>
