@@ -16,46 +16,6 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 function WeatherApp() {
-  const formatDateEN = (isoString) => {
-    const date = new Date(isoString);
-    const options = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric'
-    };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-  };
-
-  const formatTimeEN = (isoString) => {
-    const date = new Date(isoString);
-    const options = { 
-      hour: 'numeric', 
-      minute: 'numeric'
-    };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-  };
-
-  const formatDateNO = (isoString) => {
-    const date = new Date(isoString);
-    const options = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
-    return new Intl.DateTimeFormat('no-NO', options).format(date);
-  };
-
-  const formatTimeNO = (isoString) => {
-    const date = new Date(isoString);
-    const options = { 
-      hour: 'numeric', 
-      minute: 'numeric'
-    };
-    return new Intl.DateTimeFormat('no-NO', options).format(date);
-  };  
-
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
@@ -70,11 +30,15 @@ function WeatherApp() {
   const [formDisabled, setFormDisabled] = useState(false);
   const [unit, setUnit] = useState('˚C');
   const [temperature, setTemperature] = useState(0);
+  const [secondTemperature, setSecondTemperature] = useState(0);
+  const [thirdTemperature, setThirdTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [open, setOpen] = useState(false);
   const [displayFlag, setDisplayFlag] = useState(true);
   const [displayFavorites, setDisplayFavorites] = useState(true);
-  const [time, setTime] = useState(null);
+  const [firstTime, setFirstTime] = useState(null);
+  const [secondTime, setSecondTime] = useState(null);
+  const [thirdTime, setThirdTime] = useState(null);
   const { t, i18n } = useTranslation();
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
@@ -102,10 +66,14 @@ function WeatherApp() {
 
     if (event.target.value === '˚C') {
       setTemperature(weatherData.properties.timeseries[0].data.instant.details.air_temperature);
+      setSecondTemperature(weatherData.properties.timeseries[1].data.instant.details.air_temperature);
     } else if (event.target.value === '˚F') {
       const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9 / 5 + 32;
+      const secondConvertedTemperature = weatherData.properties.timeseries[1].data.instant.details.air_temperature * 9 / 5 + 32;
       const formattedTemperature = convertedTemperature.toFixed(2);
+      const secondFormattedTemperature = secondConvertedTemperature.toFixed(2);
       setTemperature(parseFloat(formattedTemperature));
+      setSecondTemperature(parseFloat(secondFormattedTemperature));
     }
   };
 
@@ -135,9 +103,14 @@ function WeatherApp() {
         const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
         const newWeatherData = weatherResponse.data;
         const firstTimeseries = newWeatherData.properties.timeseries[0];
-        const timeData = firstTimeseries.time;
-        console.log('Time Data:', timeData);
-        setTime(timeData);
+        const secondTimeseries = newWeatherData.properties.timeseries[1];
+        const thirdTimeseries = newWeatherData.properties.timeseries[2];
+        const firstTimeData = firstTimeseries.time;
+        const secondTimeData = secondTimeseries.time;
+        const thirdTimeData = thirdTimeseries.time;
+        setFirstTime(firstTimeData);
+        setSecondTime(secondTimeData);
+        setThirdTime(thirdTimeData);
         setWeatherData(newWeatherData);
 
         const countryData = geocodingResponse.data.results[0].components.country;
@@ -156,13 +129,18 @@ function WeatherApp() {
         setState(stateData);
         setContinent(continentData);
         setFormatted(formattedData);
-        setTime(timeData);
 
         if (unit === '˚C') {
           setTemperature(newWeatherData.properties.timeseries[0].data.instant.details.air_temperature);
+          setSecondTemperature(newWeatherData.properties.timeseries[1].data.instant.details.air_temperature);
+          setThirdTemperature(newWeatherData.properties.timeseries[2].data.instant.details.air_temperature);
         } else if (unit === '˚F') {
           const convertedTemperature = newWeatherData.properties.timeseries[0].data.instant.details.air_temperature * 9 / 5 + 32;
+          const secondConvertedTemperature = newWeatherData.properties.timeseries[1].data.instant.air_temperature * 9 / 5 + 32;
+          const thirdConvertedTemperature = newWeatherData.properties.timeseries[2].data.instant.air_temperature * 9 / 5 + 32;
           setTemperature(convertedTemperature);
+          setSecondTemperature(secondConvertedTemperature);
+          setThirdTemperature(thirdConvertedTemperature);
         }
       } else {
         setError('Error: No results found for the location');
@@ -300,14 +278,12 @@ function WeatherApp() {
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
-                {i18n.language === 'en' && time &&
-                  <Typography variant='h6'>{formatDateEN(time)}</Typography>
-                }
-                {i18n.language === 'no' && time &&
-                <div>
-                  <Typography variant='h6'>{formatDateNO(time)}</Typography>
-                </div>
-                }
+              {firstTime && (
+                  <Typography variant='h6'>
+                    {i18n.language === 'no' && firstTime}
+                    {i18n.language === 'en' && firstTime}
+                  </Typography>
+              )}
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
                 {displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country} {flag}</Typography>}
                 {displayFlag && !city && normalizedCity && <Typography variant='h4'>{('weather')} {normalizedCity}, {country} {flag}</Typography>}
@@ -322,12 +298,6 @@ function WeatherApp() {
                 {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country}</Typography>}
                 {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{('weather')} {continent}</Typography>}
                 {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{('weather')} {formatted}</Typography>}
-                {i18n.language === 'no' && time &&
-                  <Typography variant='subtitle1' sx={{ marginTop: 2 }}>{formatTimeNO(time)}</Typography>
-                }
-                {i18n.language === 'en' && time &&
-                  <Typography variant='subtitle1' sx={{ marginTop: 2 }}>{formatTimeEN(time)}</Typography>
-                }
               </Box>
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
@@ -339,6 +309,30 @@ function WeatherApp() {
                   <FormControlLabel value='˚F' control={<Radio />} label='Fahrenheit' />
                 </RadioGroup>
               </FormControl>
+              {secondTime && (
+                <div>
+                  <Typography variant='h6' sx={{ marginTop: 4 }}>
+                    {i18n.language === 'no' && secondTime}
+                    {i18n.language === 'en' && secondTime}
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Typography variant='h5'>{secondTemperature} {unit}</Typography>
+                    <img src={symbolMapping[weatherData.properties.timeseries[1].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+                  </Box>
+                </div>
+              )}
+              {thirdTime && (
+                <div>
+                  <Typography variant='h6' sx={{ marginTop: 4 }}>
+                    {i18n.language === 'no' && thirdTime}
+                    {i18n.language === 'en' && thirdTime}
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Typography variant='h5'>{thirdTemperature} {unit}</Typography>
+                    <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+                  </Box>
+                </div>
+              )}
             </Paper>
           </Box>
         )}
