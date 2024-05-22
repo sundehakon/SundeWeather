@@ -1,5 +1,6 @@
 import { Modal, Typography, Box, Switch } from '@mui/material';
 import LanguageSwitcher from './LanguageSwitcher';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, displayFavorites, setDisplayFavorites }) => {
 
@@ -27,7 +28,10 @@ const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, display
                 padding: 8,
                 borderRadius: 7
             }}>
-                <Typography variant='h5' sx={{ textAlign: 'center', marginBottom: 3, fontWeight: 'bold' }}>Settings</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 3, gap: 1 }}>
+                    <Typography variant='h5' sx={{ textAlign: 'center', fontWeight: 'bold' }}>Settings</Typography>
+                    <SettingsIcon />
+                </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={{ marginRight: 3 }}>Choose Language</Typography>
