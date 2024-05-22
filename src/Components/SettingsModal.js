@@ -28,8 +28,11 @@ const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, display
                 borderRadius: 7
             }}>
                 <Typography variant='h5' sx={{ textAlign: 'center', marginBottom: 1 }}>Settings</Typography>
-                <LanguageSwitcher />
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography sx={{ marginRight: 3 }}>Choose Language</Typography>
+                        <LanguageSwitcher />
+                    </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography>Display Country Flag?</Typography>
                         <Switch checked={displayFlag} onChange={handleDisplayFlag} name='displayFlag' />

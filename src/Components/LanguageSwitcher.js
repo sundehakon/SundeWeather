@@ -15,7 +15,7 @@ const LanguageSwitcher = () => {
     };
 
     return (
-        <div>
+        <div style={{ marginRight: 10 }}>
             {language === 'en'
                 ? <img onClick={() => changeLanguage('no')} alt='United States Flag' src='/images/usa.png' style={{ height: 32, width: 32 }}/>
                 : <img onClick={() => changeLanguage('en')} alt='Norwegian Flag' src='/images/norway.png' style={{ height: 32, width: 32 }}/>
