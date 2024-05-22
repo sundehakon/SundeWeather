@@ -24,11 +24,11 @@ const SettingsModal = ({ open, handleClose, displayFlag, setDisplayFlag, display
                 bgcolor: 'white',
                 color: 'black',
                 boxShadow: 24,
-                padding: 4,
+                padding: 8,
                 borderRadius: 7
             }}>
-                <Typography variant='h5' sx={{ textAlign: 'center', marginBottom: 1 }}>Settings</Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <Typography variant='h5' sx={{ textAlign: 'center', marginBottom: 3, fontWeight: 'bold' }}>Settings</Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <Typography sx={{ marginRight: 3 }}>Choose Language</Typography>
                         <LanguageSwitcher />
