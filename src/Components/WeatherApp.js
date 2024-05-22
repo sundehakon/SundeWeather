@@ -22,7 +22,14 @@ function WeatherApp() {
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
-      day: 'numeric', 
+      day: 'numeric'
+    };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  };
+
+  const formatTimeEN = (isoString) => {
+    const date = new Date(isoString);
+    const options = { 
       hour: 'numeric', 
       minute: 'numeric'
     };
@@ -35,7 +42,14 @@ function WeatherApp() {
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
-      day: 'numeric', 
+      day: 'numeric' 
+    };
+    return new Intl.DateTimeFormat('no-NO', options).format(date);
+  };
+
+  const formatTimeNO = (isoString) => {
+    const date = new Date(isoString);
+    const options = { 
       hour: 'numeric', 
       minute: 'numeric'
     };
@@ -287,11 +301,11 @@ function WeatherApp() {
               </Box>
               <Box sx={{ textAlign: 'center' }}>
                 {i18n.language === 'en' && time &&
-                  <Typography>{formatDateEN(time)}</Typography>
+                  <Typography variant='h6'>{formatDateEN(time)}</Typography>
                 }
                 {i18n.language === 'no' && time &&
                 <div>
-                  <Typography>{formatDateNO(time)}</Typography>
+                  <Typography variant='h6'>{formatDateNO(time)}</Typography>
                 </div>
                 }
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
@@ -308,6 +322,12 @@ function WeatherApp() {
                 {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country}</Typography>}
                 {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{('weather')} {continent}</Typography>}
                 {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{('weather')} {formatted}</Typography>}
+                {i18n.language === 'no' && time &&
+                  <Typography variant='subtitle1' sx={{ marginTop: 2 }}>{formatTimeNO(time)}</Typography>
+                }
+                {i18n.language === 'en' && time &&
+                  <Typography variant='subtitle1' sx={{ marginTop: 2 }}>{formatTimeEN(time)}</Typography>
+                }
               </Box>
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
