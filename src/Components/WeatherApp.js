@@ -16,6 +16,21 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 function WeatherApp() {
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    const options = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric', 
+      hour: 'numeric', 
+      minute: 'numeric', 
+      second: 'numeric', 
+      timeZoneName: 'short' 
+    };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  };
+
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
@@ -34,6 +49,7 @@ function WeatherApp() {
   const [open, setOpen] = useState(false);
   const [displayFlag, setDisplayFlag] = useState(true);
   const [displayFavorites, setDisplayFavorites] = useState(true);
+  const [time, setTime] = useState(null);
   const { t } = useTranslation();
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
@@ -93,6 +109,10 @@ function WeatherApp() {
 
         const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
         const newWeatherData = weatherResponse.data;
+        const firstTimeseries = newWeatherData.properties.timeseries[0];
+        const timeData = firstTimeseries.time;
+        console.log('Time Data:', timeData);
+        setTime(timeData);
         setWeatherData(newWeatherData);
 
         const countryData = geocodingResponse.data.results[0].components.country;
@@ -111,6 +131,7 @@ function WeatherApp() {
         setState(stateData);
         setContinent(continentData);
         setFormatted(formattedData);
+        setTime(timeData);
 
         if (unit === '˚C') {
           setTemperature(newWeatherData.properties.timeseries[0].data.instant.details.air_temperature);
@@ -254,6 +275,9 @@ function WeatherApp() {
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
+                {time &&
+                  <Typography>{formatDate(time)}</Typography>
+                }
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
                 {displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country} {flag}</Typography>}
                 {displayFlag && !city && normalizedCity && <Typography variant='h4'>{('weather')} {normalizedCity}, {country} {flag}</Typography>}
