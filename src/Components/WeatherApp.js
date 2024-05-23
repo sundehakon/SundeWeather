@@ -36,6 +36,7 @@ function WeatherApp() {
   const [open, setOpen] = useState(false);
   const [displayFlag, setDisplayFlag] = useState(true);
   const [displayFavorites, setDisplayFavorites] = useState(true);
+  const [localTime, setLocalTime] = useState(null);
   const [firstTime, setFirstTime] = useState(null);
   const [secondTime, setSecondTime] = useState(null);
   const [thirdTime, setThirdTime] = useState(null);
@@ -44,6 +45,13 @@ function WeatherApp() {
     return localStorage.getItem('isLightMode') === 'true';
   });
   const { user, isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    const now = new Date();
+    now.setMinutes(0, 0, 0);
+    const localISOTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19) + 'Z';
+    setLocalTime(localISOTime);
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -99,20 +107,28 @@ function WeatherApp() {
       const geocodingResponse = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${process.env.REACT_APP_OPENCAGEDATA_API_KEY}`);
       if (geocodingResponse.data && geocodingResponse.data.results && geocodingResponse.data.results.length > 0) {
         const { lat, lng } = geocodingResponse.data.results[0].geometry;
-
+  
         const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
         const newWeatherData = weatherResponse.data;
-        const firstTimeseries = newWeatherData.properties.timeseries[0];
-        const secondTimeseries = newWeatherData.properties.timeseries[1];
-        const thirdTimeseries = newWeatherData.properties.timeseries[2];
-        const firstTimeData = firstTimeseries.time;
-        const secondTimeData = secondTimeseries.time;
-        const thirdTimeData = thirdTimeseries.time;
-        setFirstTime(firstTimeData);
-        setSecondTime(secondTimeData);
-        setThirdTime(thirdTimeData);
-        setWeatherData(newWeatherData);
-
+  
+        const matchingTimeseriesIndex = newWeatherData.properties.timeseries.findIndex(timeseries => timeseries.time === localTime);
+        if (matchingTimeseriesIndex === -1) {
+          setError('No matching timeseries found for the current local time.');
+          handleCardDelete();
+        } else {
+          const firstTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex];
+          const secondTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 1];
+          const thirdTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 2];
+  
+          setWeatherData({ ...newWeatherData, properties: { ...newWeatherData.properties, timeseries: [firstTimeseries, secondTimeseries, thirdTimeseries] } });
+          setFirstTime(firstTimeseries.time);
+          setSecondTime(secondTimeseries.time);
+          setThirdTime(thirdTimeseries.time);
+          setTemperature(firstTimeseries.data.instant.details.air_temperature);
+          setSecondTemperature(secondTimeseries.data.instant.details.air_temperature);
+          setThirdTemperature(thirdTimeseries.data.instant.details.air_temperature);
+        }
+  
         const countryData = geocodingResponse.data.results[0].components.country;
         const flagData = geocodingResponse.data.results[0].annotations.flag;
         const cityData = geocodingResponse.data.results[0].components.city;
@@ -129,19 +145,6 @@ function WeatherApp() {
         setState(stateData);
         setContinent(continentData);
         setFormatted(formattedData);
-
-        if (unit === '˚C') {
-          setTemperature(newWeatherData.properties.timeseries[0].data.instant.details.air_temperature);
-          setSecondTemperature(newWeatherData.properties.timeseries[1].data.instant.details.air_temperature);
-          setThirdTemperature(newWeatherData.properties.timeseries[2].data.instant.details.air_temperature);
-        } else if (unit === '˚F') {
-          const convertedTemperature = newWeatherData.properties.timeseries[0].data.instant.details.air_temperature * 9 / 5 + 32;
-          const secondConvertedTemperature = newWeatherData.properties.timeseries[1].data.instant.air_temperature * 9 / 5 + 32;
-          const thirdConvertedTemperature = newWeatherData.properties.timeseries[2].data.instant.air_temperature * 9 / 5 + 32;
-          setTemperature(convertedTemperature);
-          setSecondTemperature(secondConvertedTemperature);
-          setThirdTemperature(thirdConvertedTemperature);
-        }
       } else {
         setError('Error: No results found for the location');
         handleCardDelete();
@@ -153,6 +156,7 @@ function WeatherApp() {
       setFormDisabled(false);
     }
   };
+  
 
   const handleFavorite = () => {
     if (!isAuthenticated) return;
@@ -285,19 +289,19 @@ function WeatherApp() {
                   </Typography>
               )}
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
-                {displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country} {flag}</Typography>}
-                {displayFlag && !city && normalizedCity && <Typography variant='h4'>{('weather')} {normalizedCity}, {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{('weather')} {country} {flag}</Typography>}
+                {displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country} {flag}</Typography>}
+                {displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country} {flag}</Typography>}
                 {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{('weather')} {continent} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{('weather')} {formatted} {flag}</Typography>}
-                {!displayFlag && city && <Typography variant='h4'>{('weather')} {city}, {country}</Typography>}
-                {!displayFlag && archipelago && <Typography variant='h4'>{('weather')} {archipelago}, {country}</Typography>}
-                {!displayFlag && !city && normalizedCity && <Typography variant='h4'>{('weather')} {normalizedCity}, {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{('weather')} {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{('weather')} {continent}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{('weather')} {formatted}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent} {flag}</Typography>}
+                {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted} {flag}</Typography>}
+                {!displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country}</Typography>}
+                {!displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country}</Typography>}
+                {!displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent}</Typography>}
+                {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted}</Typography>}
               </Box>
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
