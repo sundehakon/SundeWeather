@@ -319,9 +319,9 @@ function WeatherApp() {
                     {i18n.language === 'no' && secondTime}
                     {i18n.language === 'en' && secondTime}
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                     <Typography variant='h5'>{secondTemperature} {unit}</Typography>
-                    <img src={symbolMapping[weatherData.properties.timeseries[1].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+                    <img src={symbolMapping[weatherData.properties.timeseries[1].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
                   </Box>
                 </div>
               )}
@@ -331,9 +331,9 @@ function WeatherApp() {
                     {i18n.language === 'no' && thirdTime}
                     {i18n.language === 'en' && thirdTime}
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                     <Typography variant='h5'>{thirdTemperature} {unit}</Typography>
-                    <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+                    <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
                   </Box>
                 </div>
               )}
