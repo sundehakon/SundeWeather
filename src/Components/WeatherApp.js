@@ -217,7 +217,7 @@ function WeatherApp() {
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Paper sx={{ padding: 9, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
+            <Paper sx={{ padding: 9, marginTop: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 3 }}>
                 <IconButton onClick={toggleLightMode}>
                   {!isLightMode && <Brightness4Icon />}
