@@ -13,7 +13,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-function WeatherApp() {
+function WeatherSearch() {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
@@ -343,4 +343,4 @@ function WeatherApp() {
   );
 }
 
-export default WeatherApp;
+export default WeatherSearch;

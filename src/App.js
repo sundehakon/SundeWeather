@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import WeatherApp from './Components/WeatherApp';
+import WeatherSearch from './Components/WeatherSearch';
 import InteractiveMap from './Components/InteractiveMap';
 import UserHeader from './Components/UserHeader';
 import { ButtonGroup, Button } from '@mui/material';
@@ -36,7 +36,7 @@ const App = () => {
           <Button style={{ minWidth: '125px' }} onClick={displayInteractiveMap}>{t('titleMap')}</Button>
         </ButtonGroup>
       </div>
-      {display === 'weatherSearch' && <WeatherApp />}
+      {display === 'weatherSearch' && <WeatherSearch />}
       {display === 'interactiveMap' && <InteractiveMap />}
     </div>
   );
