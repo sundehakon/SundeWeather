@@ -57,10 +57,10 @@ const Map = () => {
         </Box>
       </LoadScript>
       {selected && (
-        <Box sx={{ backgroundColor: 'white', borderRadius: 1, boxShadow: 3 }}>
+        <div>
           <Typography variant="body1">Latitude: {selected.lat}</Typography>
           <Typography variant="body1">Longitude: {selected.lng}</Typography>
-        </Box>
+        </div>
       )}
     </Box>
   );

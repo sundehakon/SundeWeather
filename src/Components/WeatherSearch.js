@@ -47,7 +47,7 @@ function WeatherSearch() {
   useEffect(() => {
     const now = new Date();
     now.setMinutes(0, 0, 0);
-    const localISOTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 19) + 'Z';
+    const localISOTime = now.toISOString().slice(0, 19) + 'Z';
     setLocalTime(localISOTime);
   }, []);
 
@@ -269,9 +269,8 @@ function WeatherSearch() {
               </Box>
               <Box sx={{ textAlign: 'center' }}>
               {firstTime && (
-                  <Typography variant='h6'>
-                    {i18n.language === 'no' && firstTime}
-                    {i18n.language === 'en' && firstTime}
+                  <Typography variant='h5'>
+                    {new Date(firstTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                   </Typography>
               )}
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
@@ -301,9 +300,8 @@ function WeatherSearch() {
               </FormControl>
               {secondTime && (
                 <div>
-                  <Typography variant='h6' sx={{ marginTop: 4 }}>
-                    {i18n.language === 'no' && secondTime}
-                    {i18n.language === 'en' && secondTime}
+                  <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center'}}>
+                    {new Date(secondTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                     <Typography variant='h5'>{secondTemperature} {unit}</Typography>
@@ -313,9 +311,8 @@ function WeatherSearch() {
               )}
               {thirdTime && (
                 <div>
-                  <Typography variant='h6' sx={{ marginTop: 4 }}>
-                    {i18n.language === 'no' && thirdTime}
-                    {i18n.language === 'en' && thirdTime}
+                  <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center' }}>
+                    {new Date(thirdTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
                     <Typography variant='h5'>{thirdTemperature} {unit}</Typography>
@@ -326,17 +323,6 @@ function WeatherSearch() {
             </Paper>
           </Box>
         )}
-        <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-          <Typography sx={{ marginTop: 2, marginBottom: 1 }} variant='caption'>{t('data')}</Typography>
-          <Typography sx={{ marginBottom: 2 }} variant='caption'>{t('credit')} <a href='https://sundehakon.tech/' target='_blank' rel='noreferrer' style={{ color: isLightMode ? 'black' : 'white' }}>Håkon Sunde</a></Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2, marginBottom: 5 }}>
-            <a href='https://github.com/sundehakon' target='_blank' rel='noreferrer'>
-              {!isLightMode && <img src='/images/svgrepo-github-white.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
-              {isLightMode && <img src='/images/github-logo.png' alt='GitHub logo' style={{ height: 32, width: 32 }} />}
-            </a>
-            <a href='https://twitter.com/lordsunde' target='_blank' rel='noreferrer'><img src='https://raw.githubusercontent.com/jmnote/z-icons/master/svg/twitter.svg' alt='Twitter logo' style={{ height: 32, width: 32 }} /></a>
-          </Box>
-        </Box>
       </Box>
       <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>
     </div>

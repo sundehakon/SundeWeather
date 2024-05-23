@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import WeatherSearch from './Components/WeatherSearch';
 import InteractiveMap from './Components/InteractiveMap';
 import UserHeader from './Components/UserHeader';
+import Footer from './Components/Footer';
 import { ButtonGroup, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -38,6 +39,7 @@ const App = () => {
       </div>
       {display === 'weatherSearch' && <WeatherSearch />}
       {display === 'interactiveMap' && <InteractiveMap />}
+      <Footer />
     </div>
   );
 };
