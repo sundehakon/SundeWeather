@@ -1,5 +1,6 @@
 {
     "title": "Weather Search",
+    "titleMap": "Interactive Map",
     "button": "Get Weather",
     "input": "Enter Location...",
     "welcome": "Welcome, ",
