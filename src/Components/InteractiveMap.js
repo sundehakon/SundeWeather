@@ -1,6 +1,8 @@
+import Map from './Map';
+
 const InteractiveMap = () => {
     return (
-        <p>test</p>
+        <Map />
     );
 };
 
