@@ -4,8 +4,6 @@ import '../App.css';
 import SettingsModal from './SettingsModal';
 import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
-import LoginButton from '../login';
-import LogoutButton from '../logout';
 import { useTranslation } from 'react-i18next';
 import { symbolMapping } from './SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
@@ -217,18 +215,6 @@ function WeatherApp() {
   return (
     <div>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
-          {!isAuthenticated && <LoginButton isLightMode={isLightMode}/>}
-          {isAuthenticated && <LogoutButton isLightMode={isLightMode}/>}
-        </Box>
-        <Box>
-          {isAuthenticated && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: 2 }}>
-              <img src={user.picture} alt='User profile' style={{ borderRadius: '50%', height: 64, width: 64 }} />
-              <Typography sx={{ marginTop: 1 }}>{t('welcome')} {user.nickname}!</Typography>
-            </Box>
-          )}
-        </Box>
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 9, marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
