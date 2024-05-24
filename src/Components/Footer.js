@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from './ThemeContext';
 import '../App.css';
 
 const Footer = () => {
   const { t } = useTranslation();
-  const [isLightMode] = useState(() => {
-    return localStorage.getItem('isLightMode') === 'true';
-  });
+  const { isLightMode } = useTheme();
 
   return (
     <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>

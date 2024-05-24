@@ -5,6 +5,8 @@ import UserHeader from './Components/UserHeader';
 import Footer from './Components/Footer';
 import { ButtonGroup, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import ThemeMode from './Components/ThemeMode';
+import { ThemeProvider } from './Components/ThemeContext';
 
 const App = () => {
   const [display, setDisplay] = useState('weatherSearch');    
@@ -17,8 +19,9 @@ const App = () => {
   }
 
   return (
-    <div>
+    <ThemeProvider>
       <UserHeader />
+      <ThemeMode />
       <div
         style={{
           display: 'flex',
@@ -40,7 +43,7 @@ const App = () => {
       {display === 'weatherSearch' && <WeatherSearch />}
       {display === 'interactiveMap' && <InteractiveMap />}
       <Footer />
-    </div>
+    </ThemeProvider>
   );
 };
 

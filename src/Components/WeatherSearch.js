@@ -9,8 +9,6 @@ import { symbolMapping } from './SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 function WeatherSearch() {
@@ -39,9 +37,6 @@ function WeatherSearch() {
   const [secondTime, setSecondTime] = useState(null);
   const [thirdTime, setThirdTime] = useState(null);
   const { t } = useTranslation();
-  const [isLightMode, setIsLightMode] = useState(() => {
-    return localStorage.getItem('isLightMode') === 'true';
-  });
   const { user, isAuthenticated } = useAuth0();
 
   useEffect(() => {
@@ -58,10 +53,6 @@ function WeatherSearch() {
       setFavorites(userFavorites);
     }
   }, [isAuthenticated, user]);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('light-mode', isLightMode);
-  }, [isLightMode]);
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -202,13 +193,6 @@ function WeatherSearch() {
     handleFormSubmit({ preventDefault: () => { } });
   };
 
-  const toggleLightMode = () => {
-    const newMode = !isLightMode;
-    setIsLightMode(newMode);
-    document.documentElement.classList.toggle('light-mode', newMode);
-    localStorage.setItem('isLightMode', newMode);
-  };
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -219,10 +203,6 @@ function WeatherSearch() {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 9, marginTop: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
               <Box sx={{ alignSelf: 'flex-end', marginBottom: 3 }}>
-                <IconButton onClick={toggleLightMode}>
-                  {!isLightMode && <Brightness4Icon />}
-                  {isLightMode && <Brightness7Icon />}
-                </IconButton>
                 <IconButton onClick={handleOpen}>
                   <SettingsIcon />
                 </IconButton>

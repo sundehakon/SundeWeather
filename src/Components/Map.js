@@ -58,8 +58,8 @@ const Map = () => {
       </LoadScript>
       {selected && (
         <div>
-          <Typography variant="body1">Latitude: {selected.lat}</Typography>
-          <Typography variant="body1">Longitude: {selected.lng}</Typography>
+          <Typography>Latitude: {selected.lat}</Typography>
+          <Typography>Longitude: {selected.lng}</Typography>
         </div>
       )}
     </Box>
