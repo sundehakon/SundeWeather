@@ -22,12 +22,13 @@ const mapOptions = {
 };
 
 const Map = () => {
+const [latitude, setLatitude] = useState(40.730610);
+const [longitude, setLongitude] = useState(-73.935242);
 const [weatherData, setWeatherData] = useState(null);
+const [mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
 const [country, setCountry] = useState(null);
 const [flag, setFlag] = useState(null);
 const [error, setError] = useState(null);
-const [latitude, setLatitude] = useState(40.730610);
-const [longitude, setLongitude] = useState(-73.935242);
 const [city, setCity] = useState(null);
 const [archipelago, setArchipelago] = useState(null);
 const [normalizedCity, setNormalizedCity] = useState(null);
@@ -64,6 +65,10 @@ useEffect(() => {
     setFavorites(userFavorites);
     }
 }, [isAuthenticated, user]);
+
+useEffect(() => {
+    setMapCenter({ lat: latitude, lng: longitude });
+}, [latitude, longitude]);
 
 const handleUnitChange = (event) => {
     setUnit(event.target.value);
@@ -152,6 +157,7 @@ const handleFormSubmit = useCallback(async (lat, lng) => {
 }, [localTime]);
 
 const onMapClick = useCallback((event) => {
+    setMarkers([]);
     const newMarker = {
     lat: event.latLng.lat(),
     lng: event.latLng.lng(),
@@ -217,11 +223,6 @@ const handleCardDelete = () => {
     setTemperature(0);
 };
 
-const mapCenter = {
-    lat: latitude,
-    lng: longitude
-};
-
 return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
@@ -266,7 +267,7 @@ return (
                     {displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country} {flag}</Typography>}
                     {displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country} {flag}</Typography>}
                     {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country} {flag}</Typography>}
-                    {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country} {flag}</Typography>}
+                    {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country} {flag}</Typography>}
                     {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent} {flag}</Typography>}
                     {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted} {flag}</Typography>}
                     {!displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country}</Typography>}
