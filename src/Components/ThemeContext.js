@@ -1,17 +1,20 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [isLightMode, setIsLightMode] = useState(() => {
-    return localStorage.getItem('isLightMode') === 'true';
+    const storedMode = localStorage.getItem('isLightMode');
+    return storedMode === null ? true : storedMode === 'true';
   });
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('light-mode', isLightMode);
+    localStorage.setItem('isLightMode', isLightMode);
+  }, [isLightMode]);
+
   const toggleLightMode = () => {
-    const newMode = !isLightMode;
-    setIsLightMode(newMode);
-    document.documentElement.classList.toggle('light-mode', newMode);
-    localStorage.setItem('isLightMode', newMode);
+    setIsLightMode((prevMode) => !prevMode);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 
 const containerStyle = {
   width: '100%',
@@ -32,14 +32,33 @@ const Map = () => {
     setSelected(newMarker);
   }, []);
 
+  const fetchCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    } else {
+      console.log('Geolocation not supported');
+    }
+  };
+
+  const success = (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+  };
+
+  const error = (error) => {
+    console.error('Error occurred while retrieving geolocation:', error);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
+    <Button onClick={fetchCurrentLocation}>Use My Location</Button>
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
         <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
           <GoogleMap
             mapContainerStyle={containerStyle}
             center={mapCenter}
-            zoom={10}
+            zoom={1}
             options={mapOptions}
             onClick={onMapClick}
           >
