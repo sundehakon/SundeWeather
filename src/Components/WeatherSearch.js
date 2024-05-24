@@ -38,7 +38,7 @@ function WeatherSearch() {
   const [firstTime, setFirstTime] = useState(null);
   const [secondTime, setSecondTime] = useState(null);
   const [thirdTime, setThirdTime] = useState(null);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isLightMode, setIsLightMode] = useState(() => {
     return localStorage.getItem('isLightMode') === 'true';
   });
@@ -268,11 +268,6 @@ function WeatherSearch() {
                 <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
               </Box>
               <Box sx={{ textAlign: 'center' }}>
-              {firstTime && (
-                  <Typography variant='h5'>
-                    {new Date(firstTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-                  </Typography>
-              )}
                 {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
                 {displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country} {flag}</Typography>}
                 {displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country} {flag}</Typography>}
@@ -287,6 +282,11 @@ function WeatherSearch() {
                 {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country}</Typography>}
                 {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent}</Typography>}
                 {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted}</Typography>}
+                {firstTime && (
+                  <Typography variant='h5' sx={{ marginTop: 2 }}>
+                    {new Date(firstTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                  </Typography>
+                )}
               </Box>
               <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
                 <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
@@ -304,7 +304,7 @@ function WeatherSearch() {
                     {new Date(secondTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                    <Typography variant='h5'>{secondTemperature} {unit}</Typography>
+                    <Typography>{secondTemperature} {unit}</Typography>
                     <img src={symbolMapping[weatherData.properties.timeseries[1].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
                   </Box>
                 </div>
@@ -315,7 +315,7 @@ function WeatherSearch() {
                     {new Date(thirdTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                    <Typography variant='h5'>{thirdTemperature} {unit}</Typography>
+                    <Typography>{thirdTemperature} {unit}</Typography>
                     <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
                   </Box>
                 </div>
