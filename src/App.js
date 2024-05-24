@@ -7,21 +7,34 @@ import { ButtonGroup, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ThemeMode from './Components/ThemeMode';
 import { ThemeProvider } from './Components/ThemeContext';
+import SettingsModal from './Components/SettingsModal';
 
 const App = () => {
-  const [display, setDisplay] = useState('weatherSearch');    
+  const [display, setDisplay] = useState('weatherSearch');   
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
+  const [displayFlag, setDisplayFlag] = useState(true);
+  const [displayFavorites, setDisplayFavorites] = useState(true);  
   const { t } = useTranslation();
+
+  const toggleSettingsModal = () => {
+    setIsSettingsOpen(!isSettingsOpen);
+  };
+
+  const handleClose = () => setOpen(false); 
+
   const displayWeatherSearch = () => {
     setDisplay('weatherSearch');
   };
+
   const displayInteractiveMap = () => {
     setDisplay('interactiveMap');
-  }
+  };
 
   return (
     <ThemeProvider>
       <UserHeader />
-      <ThemeMode />
+      <ThemeMode toggleSettingsModal={toggleSettingsModal}/>
       <div
         style={{
           display: 'flex',
@@ -43,6 +56,7 @@ const App = () => {
       {display === 'weatherSearch' && <WeatherSearch />}
       {display === 'interactiveMap' && <InteractiveMap />}
       <Footer />
+      {isSettingsOpen && <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>}
     </ThemeProvider>
   );
 };

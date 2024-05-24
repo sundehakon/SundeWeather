@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import SettingsModal from './SettingsModal';
 import '../App.css';
 import { Button, Typography, Paper, Box, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -10,7 +9,7 @@ import { symbolMapping } from './SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import SettingsIcon from '@mui/icons-material/Settings';
+import PlaceIcon from '@mui/icons-material/Place';
 
 const containerStyle = {
   width: '100%',
@@ -28,7 +27,6 @@ const [weatherData, setWeatherData] = useState(null);
 const [country, setCountry] = useState(null);
 const [flag, setFlag] = useState(null);
 const [error, setError] = useState(null);
-const [open, setOpen] = useState(false);
 const [latitude, setLatitude] = useState(40.730610);
 const [longitude, setLongitude] = useState(-73.935242);
 const [city, setCity] = useState(null);
@@ -44,8 +42,8 @@ const [thirdTemperature, setThirdTemperature] = useState(0);
 const [markers, setMarkers] = useState([]);
 const [selected, setSelected] = useState(null);
 const [favorites, setFavorites] = useState([]);
-const [displayFlag, setDisplayFlag] = useState(true);
-const [displayFavorites, setDisplayFavorites] = useState(true);
+const [displayFlag] = useState(true);
+const [displayFavorites] = useState(true);
 const [localTime, setLocalTime] = useState(null);
 const [firstTime, setFirstTime] = useState(null);
 const [secondTime, setSecondTime] = useState(null);
@@ -219,9 +217,6 @@ const handleCardDelete = () => {
     setLocation('');
 };
 
-const handleOpen = () => setOpen(true);
-const handleClose = () => setOpen(false);
-
 const mapCenter = {
     lat: latitude,
     lng: longitude
@@ -229,98 +224,99 @@ const mapCenter = {
 
 return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
-        <IconButton onClick={handleOpen}>
-            <SettingsIcon color='primary'/>
-        </IconButton>
-    <Button onClick={fetchCurrentLocation}>Use My Location</Button>
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-        <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
-        <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={mapCenter}
-            zoom={10}
-            options={mapOptions}
-            onClick={onMapClick}
-        >
-            {markers.map((marker, index) => (
-            <Marker
-                key={index}
-                position={{ lat: marker.lat, lng: marker.lng }}
-                icon={{
-                url: '/logo192.png',
-                scaledSize: new window.google.maps.Size(30, 30),
-                }}
-            />
-            ))}
-        </GoogleMap>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
+            <Button onClick={fetchCurrentLocation}>
+                Use My Location 
+                <PlaceIcon />
+            </Button>
         </Box>
-    </LoadScript>
-    {weatherData && (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3 }}>
-        <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
-            {displayFavorites && isAuthenticated && !isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
-            {displayFavorites && isAuthenticated && isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }} /></IconButton>}
-            <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
-        </Box>
-        <Box sx={{ textAlign: 'center' }}>
-                {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
-                {displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country} {flag}</Typography>}
-                {displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent} {flag}</Typography>}
-                {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted} {flag}</Typography>}
-                {!displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country}</Typography>}
-                {!displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country}</Typography>}
-                {!displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent}</Typography>}
-                {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted}</Typography>}
-                {firstTime && (
-                <Typography variant='h5' sx={{ marginTop: 2 }}>
-                    {new Date(firstTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-                </Typography>
+        <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+            <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
+            <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={mapCenter}
+                zoom={10}
+                options={mapOptions}
+                onClick={onMapClick}
+            >
+                {markers.map((marker, index) => (
+                <Marker
+                    key={index}
+                    position={{ lat: marker.lat, lng: marker.lng }}
+                    icon={{
+                    url: '/logo192.png',
+                    scaledSize: new window.google.maps.Size(30, 30),
+                    }}
+                />
+                ))}
+            </GoogleMap>
+            </Box>
+        </LoadScript>
+        {weatherData && (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3 }}>
+            <Box sx={{ alignSelf: 'flex-end', marginBottom: 2 }}>
+                {displayFavorites && isAuthenticated && !isFavorite() && <IconButton onClick={handleFavorite}><FavoriteBorderIcon /></IconButton>}
+                {displayFavorites && isAuthenticated && isFavorite() && <IconButton onClick={handleRemoveFavorite}><FavoriteIcon sx={{ color: '#be1931' }} /></IconButton>}
+                <IconButton onClick={handleCardDelete}><CloseIcon /></IconButton>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+                    {displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country} {flag}</Typography>}
+                    {displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country} {flag}</Typography>}
+                    {displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country} {flag}</Typography>}
+                    {displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country} {flag}</Typography>}
+                    {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{('weather')} {state}, {country} {flag}</Typography>}
+                    {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent} {flag}</Typography>}
+                    {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted} {flag}</Typography>}
+                    {!displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country}</Typography>}
+                    {!displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country}</Typography>}
+                    {!displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country}</Typography>}
+                    {!displayFlag && !city && !normalizedCity && !state && country && <Typography variant='h4'>{t('weather')} {country}</Typography>}
+                    {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country}</Typography>}
+                    {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent}</Typography>}
+                    {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted}</Typography>}
+                    {firstTime && (
+                    <Typography variant='h5' sx={{ marginTop: 2 }}>
+                        {new Date(firstTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </Typography>
+                    )}
+                </Box>
+                <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
+                    <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
+                </Box>
+                <Typography sx={{ marginTop: 1 }} variant='h4'>{temperature} {unit}</Typography>
+                <FormControl>
+                    <RadioGroup row value={unit} onChange={handleUnitChange} sx={{ marginTop: 2 }}>
+                    <FormControlLabel value='˚C' control={<Radio />} label='Celsius' />
+                    <FormControlLabel value='˚F' control={<Radio />} label='Fahrenheit' />
+                    </RadioGroup>
+                </FormControl>
+                {secondTime && (
+                    <div>
+                    <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center'}}>
+                        {new Date(secondTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                        <Typography>{secondTemperature} {unit}</Typography>
+                        <img src={symbolMapping[weatherData.properties.timeseries[1].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
+                    </Box>
+                    </div>
                 )}
-            </Box>
-            <Box sx={{ height: 100, width: 100, marginTop: 2 }}>
-                <img src={symbolMapping[weatherData.properties.timeseries[0].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' />
-            </Box>
-            <Typography sx={{ marginTop: 1 }} variant='h4'>{temperature} {unit}</Typography>
-            <FormControl>
-                <RadioGroup row value={unit} onChange={handleUnitChange} sx={{ marginTop: 2 }}>
-                <FormControlLabel value='˚C' control={<Radio />} label='Celsius' />
-                <FormControlLabel value='˚F' control={<Radio />} label='Fahrenheit' />
-                </RadioGroup>
-            </FormControl>
-            {secondTime && (
-                <div>
-                <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center'}}>
-                    {new Date(secondTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                    <Typography>{secondTemperature} {unit}</Typography>
-                    <img src={symbolMapping[weatherData.properties.timeseries[1].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
-                </Box>
-                </div>
-            )}
-            {thirdTime && (
-                <div>
-                <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center' }}>
-                    {new Date(thirdTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                    <Typography>{thirdTemperature} {unit}</Typography>
-                    <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
-                </Box>
-                </div>
-            )}
-        </Paper>
-    </Box>
-    )}
-    <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>
-    </Box>
+                {thirdTime && (
+                    <div>
+                    <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center' }}>
+                        {new Date(thirdTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                        <Typography>{thirdTemperature} {unit}</Typography>
+                        <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
+                    </Box>
+                    </div>
+                )}
+            </Paper>
+        </Box>
+        )}
+        </Box>
     );
 };
 
