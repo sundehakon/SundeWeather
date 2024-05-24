@@ -19,7 +19,7 @@ const UserHeader = () => {
     }
 
     const greetings = [ 
-        "Welcome!",
+        "Welcome",
         "Hallo",
         "Përshëndetje",
         "ሰላም",
