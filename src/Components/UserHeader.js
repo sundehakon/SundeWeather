@@ -1,16 +1,15 @@
 import LoginButton from '../login';
 import LogoutButton from '../logout';
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from './ThemeContext';
 
 const UserHeader = () => {
     const { t } = useTranslation();
     const { isAuthenticated, user } = useAuth0();
-    const [isLightMode] = useState(() => {
-        return localStorage.getItem('isLightMode') === 'true';
-      });
+    const { isLightMode } = useTheme();
 
     return (
         <div>
