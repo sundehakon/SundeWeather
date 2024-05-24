@@ -22,7 +22,6 @@ const mapOptions = {
 };
 
 const Map = () => {
-const [location, setLocation] = useState('');
 const [weatherData, setWeatherData] = useState(null);
 const [country, setCountry] = useState(null);
 const [flag, setFlag] = useState(null);
@@ -97,6 +96,8 @@ const success = (position) => {
     setLongitude(longitudeData);
     setMarkers([{ lat: latitudeData, lng: longitudeData }]);
     setSelected({ lat: latitudeData, lng: longitudeData });
+    console.log(selected.latitude);
+    console.log(selected.longitude);
     handleFormSubmit(latitudeData, longitudeData);
 };
 
@@ -214,7 +215,6 @@ const handleCardDelete = () => {
     setContinent(null);
     setFormatted(null);
     setTemperature(0);
-    setLocation('');
 };
 
 const mapCenter = {
@@ -244,7 +244,7 @@ return (
                     key={index}
                     position={{ lat: marker.lat, lng: marker.lng }}
                     icon={{
-                    url: '/logo192.png',
+                    url: '/pin.png',
                     scaledSize: new window.google.maps.Size(30, 30),
                     }}
                 />
@@ -252,6 +252,7 @@ return (
             </GoogleMap>
             </Box>
         </LoadScript>
+        {error && <Typography sx={{ textAlign: 'center', color: 'red', marginTop: 2 }} variant='h6'>{error}</Typography>}
         {weatherData && (
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3 }}>
