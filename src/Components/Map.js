@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import SettingsModal from './SettingsModal';
 import '../App.css';
 import { Button, Typography, Paper, Box, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -9,6 +10,7 @@ import { symbolMapping } from './SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const containerStyle = {
   width: '100%',
@@ -26,6 +28,7 @@ const [weatherData, setWeatherData] = useState(null);
 const [country, setCountry] = useState(null);
 const [flag, setFlag] = useState(null);
 const [error, setError] = useState(null);
+const [open, setOpen] = useState(false);
 const [latitude, setLatitude] = useState(40.730610);
 const [longitude, setLongitude] = useState(-73.935242);
 const [city, setCity] = useState(null);
@@ -216,6 +219,9 @@ const handleCardDelete = () => {
     setLocation('');
 };
 
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
+
 const mapCenter = {
     lat: latitude,
     lng: longitude
@@ -223,6 +229,9 @@ const mapCenter = {
 
 return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
+        <IconButton onClick={handleOpen}>
+            <SettingsIcon color='primary'/>
+        </IconButton>
     <Button onClick={fetchCurrentLocation}>Use My Location</Button>
     <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
         <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
@@ -310,8 +319,9 @@ return (
         </Paper>
     </Box>
     )}
+    <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>
     </Box>
-);
+    );
 };
 
 export default Map;
