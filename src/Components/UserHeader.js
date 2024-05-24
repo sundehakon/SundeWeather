@@ -36,7 +36,7 @@ const UserHeader = () => {
         "Moni",
         "您好",
         "您好",
-        "Bonghjornu",
+        "Bonjornu",
         "Zdravo",
         "Ahoj",
         "Hej",
