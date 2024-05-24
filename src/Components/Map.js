@@ -1,15 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
+import axios from 'axios';
 
 const containerStyle = {
   width: '100%',
   height: '100%',
-};
-
-const mapCenter = {
-  lat: -3.745,
-  lng: -38.523,
 };
 
 const mapOptions = {
@@ -20,6 +16,7 @@ const mapOptions = {
 const Map = () => {
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
 
   const onMapClick = useCallback((event) => {
     const newMarker = {
@@ -30,6 +27,8 @@ const Map = () => {
 
     setMarkers((current) => [...current, newMarker]);
     setSelected(newMarker);
+
+    handleFormSubmit(newMarker.lat, newMarker.lng);
   }, []);
 
   const fetchCurrentLocation = () => {
@@ -41,24 +40,36 @@ const Map = () => {
   };
 
   const success = (position) => {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    const latitudeData = position.coords.latitude;
+    const longitudeData = position.coords.longitude;
+    setMarkers([{ lat: latitudeData, lng: longitudeData }]);
+    setSelected({ lat: latitudeData, lng: longitudeData });
+    handleFormSubmit(latitudeData, longitudeData);
   };
 
   const error = (error) => {
     console.error('Error occurred while retrieving geolocation:', error);
   };
 
+  const handleFormSubmit = async (lat, lng) => {
+    try {
+      const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
+      const newWeatherData = weatherResponse.data;
+      setWeatherData(newWeatherData);
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+    }
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
-    <Button onClick={fetchCurrentLocation}>Use My Location</Button>
+      <Button onClick={fetchCurrentLocation}>Use My Location</Button>
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
         <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={mapCenter}
-            zoom={1}
+            center={{ lat: 0, lng: 0 }}
+            zoom={2}
             options={mapOptions}
             onClick={onMapClick}
           >
@@ -75,11 +86,11 @@ const Map = () => {
           </GoogleMap>
         </Box>
       </LoadScript>
-      {selected && (
-        <div>
-          <Typography>Latitude: {selected.lat}</Typography>
-          <Typography>Longitude: {selected.lng}</Typography>
-        </div>
+      {weatherData && (
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Paper sx={{ marginTop: 5, padding: 7, borderRadius: 7, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', boxShadow: 3 }}>
+          </Paper>
+        </Box>
       )}
     </Box>
   );
