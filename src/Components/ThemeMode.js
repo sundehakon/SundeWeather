@@ -10,7 +10,7 @@ const ThemeMode = () => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <IconButton onClick={toggleLightMode}>
-                {!isLightMode && <Brightness4Icon />}
+                {!isLightMode && <Brightness4Icon color='primary'/>}
                 {isLightMode && <Brightness7Icon />}
             </IconButton>
         </Box>
