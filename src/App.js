@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import WeatherSearch from './Components/WeatherSearch';
-import InteractiveMap from './Components/InteractiveMap';
+import Map from './Components/Map';
 import UserHeader from './Components/UserHeader';
 import Footer from './Components/Footer';
 import { ButtonGroup, Button } from '@mui/material';
@@ -26,8 +26,8 @@ const App = () => {
     setDisplay('weatherSearch');
   };
 
-  const displayInteractiveMap = () => {
-    setDisplay('interactiveMap');
+  const displayMap = () => {
+    setDisplay('map');
   };
 
   return (
@@ -49,7 +49,7 @@ const App = () => {
           }}
         >
           <Button style={{ minWidth: '165px' }} onClick={displayWeatherSearch}>{t('title')}</Button>
-          <Button style={{ minWidth: '125px' }} onClick={displayInteractiveMap}>{t('titleMap')}</Button>
+          <Button style={{ minWidth: '125px' }} onClick={displayMap}>{t('titleMap')}</Button>
         </ButtonGroup>
       </div>
       {display === 'weatherSearch' && (
@@ -58,8 +58,8 @@ const App = () => {
           displayFavorites={displayFavorites}
         />
       )}
-      {display === 'interactiveMap' && (
-        <InteractiveMap
+      {display === 'map' && (
+        <Map
           displayFlag={displayFlag}
           displayFavorites={displayFavorites} 
         />
