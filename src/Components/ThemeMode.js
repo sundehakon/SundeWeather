@@ -9,13 +9,14 @@ const ThemeMode = ({ toggleSettingsModal }) => {
     const { isLightMode, toggleLightMode } = useTheme();
 
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 1 }}>
             <IconButton onClick={toggleLightMode}>
                 {!isLightMode && <Brightness4Icon color='primary'/>}
                 {isLightMode && <Brightness7Icon />}
             </IconButton>
             <IconButton onClick={toggleSettingsModal}>
-                <SettingsIcon color='primary' />
+                {!isLightMode && <SettingsIcon color='primary' />}
+                {isLightMode && <SettingsIcon />}
             </IconButton>
         </Box>
     );
