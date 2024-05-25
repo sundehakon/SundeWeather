@@ -220,6 +220,7 @@ const handleRemoveFavorite = () => {
     );
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     setFavorites(newFavorites);
+    setMarkers([]);
 };
 
 const handleFavoriteClick = (favorite) => {
@@ -250,6 +251,7 @@ const handleCardDelete = () => {
     setContinent(null);
     setFormatted(null);
     setTemperature(0);
+    setMarkers([]);
 };
 
 return (
