@@ -39,7 +39,7 @@ const [temperature, setTemperature] = useState(0);
 const [secondTemperature, setSecondTemperature] = useState(0);
 const [thirdTemperature, setThirdTemperature] = useState(0);
 const [markers, setMarkers] = useState([]);
-const [selected, setSelected] = useState(null);
+const [selected, setSelected] = useState(0);
 const [favorites, setFavorites] = useState([]);
 const [localTime, setLocalTime] = useState(null);
 const [firstTime, setFirstTime] = useState(null);
@@ -232,7 +232,7 @@ return (
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={mapCenter}
-                zoom={1}
+                zoom={2}
                 options={mapOptions}
                 onClick={onMapClick}
             >
