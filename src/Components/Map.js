@@ -354,7 +354,7 @@ return (
                     {displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country} {flag}</Typography>}
                     {displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent} {flag}</Typography>}
                     {displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted} {flag}</Typography>}
-                    {displayFlag && !city && !normalizedCity && !state && !country && !continent && !formatted && <Typography variant='h4'>{t('weather')} Unknown Location</Typography>}
+                    {displayFlag && !city && !normalizedCity && !state && !country && !continent && !formatted && <Typography variant='h4'>{t('weather')} {t('unknown')}</Typography>}
                     {!displayFlag && city && <Typography variant='h4'>{t('weather')} {city}, {country}</Typography>}
                     {!displayFlag && archipelago && <Typography variant='h4'>{t('weather')} {archipelago}, {country}</Typography>}
                     {!displayFlag && !city && normalizedCity && <Typography variant='h4'>{t('weather')} {normalizedCity}, {country}</Typography>}
@@ -362,7 +362,7 @@ return (
                     {!displayFlag && !city && !normalizedCity && state && <Typography variant='h4'>{t('weather')} {state}, {country}</Typography>}
                     {!displayFlag && !city && !normalizedCity && !state && !country && continent && <Typography variant='h4'>{t('weather')} {continent}</Typography>}
                     {!displayFlag && !city && !normalizedCity && !state && !country && !continent && formatted && <Typography variant='h4'>{t('weather')} {formatted}</Typography>}
-                    {!displayFlag && !city && !normalizedCity && !state && !country && !continent && !formatted && <Typography variant='h4'>{t('weather')} Unknown Location</Typography>}
+                    {!displayFlag && !city && !normalizedCity && !state && !country && !continent && !formatted && <Typography variant='h4'>{t('weather')} {t('unknown')}</Typography>}
                     {firstTime && (
                     <Typography variant='h5' sx={{ marginTop: 2 }}>
                         {new Date(firstTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
