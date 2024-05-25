@@ -1,0 +1,21 @@
+{
+    "title": "Búsqueda de Clima",
+    "titleMap": "Mapa Interactivo",
+    "button": "Obtener Clima",
+    "input": "Ingrese Ubicación...",
+    "welcome": "Bienvenido, ",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "caption": "¿Ubicación incorrecta? ¡Intente agregar el país a la solicitud!",
+    "favoritesLogin": "Inicie sesión para guardar favoritos",
+    "favorites": "Favoritos",
+    "favoritesMessage": "Haga clic en el corazón en la ubicación para agregar a favoritos",
+    "weather": "Clima para",
+    "myLocation": "Usar Mi Ubicación",
+    "settings": "Configuraciones",
+    "language": "Elige Idioma",
+    "displayFlag": "¿Mostrar Bandera?",
+    "displayFavorites": "¿Mostrar Favoritos?",
+    "data": "Datos de Yr y OpenCage",
+    "credit": "Sitio web creado por"
+}
