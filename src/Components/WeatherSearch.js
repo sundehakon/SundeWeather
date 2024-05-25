@@ -207,8 +207,7 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 9, marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
-              <Typography variant='h3' sx={{ textAlign: 'center' }}>{t('title')}</Typography>
-              <TextField type="text" value={location} onChange={handleLocationChange} placeholder={t('input')} sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
+              <TextField type="text" value={location} onChange={handleLocationChange} placeholder={t('input')} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>{t('button')}</Button>
               <Typography sx={{ marginTop: 3, fontSize: 10, textAlign: 'center' }}>{t('caption')}</Typography>
               {displayFavorites ? (
