@@ -200,6 +200,7 @@ const handleFavorite = () => {
     const newFavorites = [...storedFavorites, favoriteData];
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setFavorites(newFavorites.filter(fav => fav.userId === user.sub));
+    console.log(favorites);
 };
 
 const isFavorite = () => {
@@ -219,6 +220,22 @@ const handleRemoveFavorite = () => {
     );
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     setFavorites(newFavorites);
+};
+
+const handleFavoriteClick = (favorite) => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const city = favorite.city || favorite.archipelago || favorite.normalizedCity || favorite.state || favorite.country || favorite.continent || favorite.formatted;
+
+    if (storedFavorites.length === 0) {
+        console.log('No favorites found.');
+        return;
+    }
+
+    if (city) {
+        setLatitude(favorite.lat);
+        setLongitude(favorite.lon);
+        handleFormSubmit(favorite.lat, favorite.lon);
+    }
 };
 
 const handleCardDelete = () => {
@@ -263,6 +280,32 @@ return (
             </GoogleMap>
             </Box>
         </LoadScript>
+        <Paper sx={{ padding: 5, marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
+        {displayFavorites ? (
+                isAuthenticated ? (
+                  <>
+                    <Typography sx={{ display: 'flex', gap: 1 }} variant='h6'>
+                      {t('favorites')}
+                      <FavoriteIcon sx={{ color: '#be1931' }} />
+                    </Typography>
+                    {favorites.length > 0 ? (
+                      favorites.map((data, index) => (
+                        <Box key={index} sx={{ display: 'flex' }}>
+                            <Typography sx={{ cursor: 'pointer' }} onClick={() => handleFavoriteClick(data)}>
+                                - {data.city || data.archipelago || data.normalizedCity || data.state || data.country || data.continent || data.formatted} 
+                                {displayFlag && data.flag ? ` ${data.flag}` : ''}
+                            </Typography>
+                        </Box>
+                      ))
+                    ) : (
+                      <Typography sx={{ textAlign: 'center', marginTop: 2 }} variant='subtitle2'>{t('favoritesMessage')}</Typography>
+                    )}
+                  </>
+                ) : (
+                  <Typography sx={{ textAlign: 'center' }} variant='subtitle2'>{t('favoritesLogin')}</Typography>
+                )
+              ) : null}
+        </Paper>
         {error && <Typography sx={{ textAlign: 'center', color: 'red', marginTop: 2 }} variant='h6'>{error}</Typography>}
         {weatherData && (
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
