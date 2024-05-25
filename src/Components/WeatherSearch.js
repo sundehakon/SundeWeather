@@ -59,13 +59,17 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
     if (event.target.value === '˚C') {
       setTemperature(weatherData.properties.timeseries[0].data.instant.details.air_temperature);
       setSecondTemperature(weatherData.properties.timeseries[1].data.instant.details.air_temperature);
+      setThirdTemperature(weatherData.properties.timeseries[2].data.instant.details.air_temperature);
     } else if (event.target.value === '˚F') {
       const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9 / 5 + 32;
       const secondConvertedTemperature = weatherData.properties.timeseries[1].data.instant.details.air_temperature * 9 / 5 + 32;
+      const thirdConvertedTemperature = weatherData.properties.timeseries[2].data.instant.details.air_temperature * 9 / 5 + 32;
       const formattedTemperature = convertedTemperature.toFixed(2);
       const secondFormattedTemperature = secondConvertedTemperature.toFixed(2);
+      const thirdFormattedTemperature = thirdConvertedTemperature.toFixed(2);
       setTemperature(parseFloat(formattedTemperature));
       setSecondTemperature(parseFloat(secondFormattedTemperature));
+      setThirdTemperature(parseFloat(thirdFormattedTemperature));
     }
   };
 
@@ -108,9 +112,19 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
           setFirstTime(firstTimeseries.time);
           setSecondTime(secondTimeseries.time);
           setThirdTime(thirdTimeseries.time);
-          setTemperature(firstTimeseries.data.instant.details.air_temperature);
-          setSecondTemperature(secondTimeseries.data.instant.details.air_temperature);
-          setThirdTemperature(thirdTimeseries.data.instant.details.air_temperature);
+  
+          if (unit === '˚C') {
+            setTemperature(firstTimeseries.data.instant.details.air_temperature);
+            setSecondTemperature(secondTimeseries.data.instant.details.air_temperature);
+            setThirdTemperature(thirdTimeseries.data.instant.details.air_temperature);
+          } else if (unit === '˚F') {
+            const convertedTemperature = firstTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+            const secondConvertedTemperature = secondTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+            const thirdConvertedTemperature = thirdTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+            setTemperature(parseFloat(convertedTemperature.toFixed(2)));
+            setSecondTemperature(parseFloat(secondConvertedTemperature.toFixed(2)));
+            setThirdTemperature(parseFloat(thirdConvertedTemperature.toFixed(2)));
+          }
         }
   
         const countryData = geocodingResponse.data.results[0].components.country;
@@ -140,7 +154,6 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
       setFormDisabled(false);
     }
   };
-  
 
   const handleFavorite = () => {
     if (!isAuthenticated) return;
