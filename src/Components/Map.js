@@ -222,9 +222,11 @@ const handleCardDelete = () => {
 
 return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
-        <Button onClick={fetchCurrentLocation} sx={{ marginBottom: 2 }}>
-            Use My Location 
-        </Button>
+        <Box sx={{ marginBottom: 2 }}>
+            <Button onClick={fetchCurrentLocation}>
+                Use My Location 
+            </Button>
+        </Box>
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
             <GoogleMap
@@ -239,7 +241,7 @@ return (
                     key={index}
                     position={{ lat: marker.lat, lng: marker.lng }}
                     icon={{
-                    url: '/pin.png',
+                    url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
                     scaledSize: new window.google.maps.Size(30, 30),
                     }}
                 />
