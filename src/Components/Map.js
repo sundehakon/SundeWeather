@@ -21,8 +21,8 @@ const mapOptions = {
 };
 
 const Map = ({ displayFlag, displayFavorites }) => {
-const [latitude, setLatitude] = useState(0);
-const [longitude, setLongitude] = useState(0);
+const [latitude, setLatitude] = useState(36.09667080704707);
+const [longitude, setLongitude] = useState(4.948267699304205);
 const [weatherData, setWeatherData] = useState(null);
 const [mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
 const [country, setCountry] = useState(null);
