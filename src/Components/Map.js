@@ -9,7 +9,6 @@ import { symbolMapping } from './SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import PlaceIcon from '@mui/icons-material/Place';
 
 const containerStyle = {
   width: '100%',
@@ -22,8 +21,8 @@ const mapOptions = {
 };
 
 const Map = () => {
-const [latitude, setLatitude] = useState(40.730610);
-const [longitude, setLongitude] = useState(-73.935242);
+const [latitude, setLatitude] = useState(0);
+const [longitude, setLongitude] = useState(0);
 const [weatherData, setWeatherData] = useState(null);
 const [mapCenter, setMapCenter] = useState({ lat: latitude, lng: longitude });
 const [country, setCountry] = useState(null);
@@ -233,7 +232,7 @@ return (
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={mapCenter}
-                zoom={10}
+                zoom={1}
                 options={mapOptions}
                 onClick={onMapClick}
             >
