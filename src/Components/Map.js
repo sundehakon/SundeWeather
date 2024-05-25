@@ -20,7 +20,7 @@ const mapOptions = {
   zoomControl: true,
 };
 
-const Map = () => {
+const Map = ({ displayFlag, displayFavorites }) => {
 const [latitude, setLatitude] = useState(0);
 const [longitude, setLongitude] = useState(0);
 const [weatherData, setWeatherData] = useState(null);
@@ -41,8 +41,6 @@ const [thirdTemperature, setThirdTemperature] = useState(0);
 const [markers, setMarkers] = useState([]);
 const [selected, setSelected] = useState(null);
 const [favorites, setFavorites] = useState([]);
-const [displayFlag] = useState(true);
-const [displayFavorites] = useState(true);
 const [localTime, setLocalTime] = useState(null);
 const [firstTime, setFirstTime] = useState(null);
 const [secondTime, setSecondTime] = useState(null);
