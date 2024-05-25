@@ -73,13 +73,17 @@ const handleUnitChange = (event) => {
     if (event.target.value === '˚C') {
     setTemperature(weatherData.properties.timeseries[0].data.instant.details.air_temperature);
     setSecondTemperature(weatherData.properties.timeseries[1].data.instant.details.air_temperature);
+    setThirdTemperature(weatherData.properties.timeseries[2].data.instant.details.air_temperature);
     } else if (event.target.value === '˚F') {
     const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9 / 5 + 32;
     const secondConvertedTemperature = weatherData.properties.timeseries[1].data.instant.details.air_temperature * 9 / 5 + 32;
+    const thirdConvertedTemperature = weatherData.properties.timeseries[2].data.instant.details.air_temperature * 9 / 5 + 32;
     const formattedTemperature = convertedTemperature.toFixed(2);
     const secondFormattedTemperature = secondConvertedTemperature.toFixed(2);
+    const thirdFormattedTemperature = thirdConvertedTemperature.toFixed(2);
     setTemperature(parseFloat(formattedTemperature));
     setSecondTemperature(parseFloat(secondFormattedTemperature));
+    setThirdTemperature(parseFloat(thirdFormattedTemperature));
     }
 };
 
@@ -109,49 +113,59 @@ const handleLocationFetchError = (error) => {
 
 const handleFormSubmit = useCallback(async (lat, lng) => {
     try {
-    const geocodingResponse = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C${lng}&key=${process.env.REACT_APP_OPENCAGEDATA_API_KEY}`);
-    const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
-    const newWeatherData = weatherResponse.data;
-    setWeatherData(newWeatherData);
+        const geocodingResponse = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${lat}%2C${lng}&key=${process.env.REACT_APP_OPENCAGEDATA_API_KEY}`);
+        const weatherResponse = await axios.get(`https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=${lat}&lon=${lng}`);
+        const newWeatherData = weatherResponse.data;
+        setWeatherData(newWeatherData);
 
-    const matchingTimeseriesIndex = newWeatherData.properties.timeseries.findIndex(timeseries => timeseries.time === localTime);
-    if (matchingTimeseriesIndex === -1) {
-        setError('No matching timeseries found for the current local time.');
-        handleCardDelete();
-    } else {
-        const firstTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex];
-        const secondTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 1];
-        const thirdTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 2];
+        const matchingTimeseriesIndex = newWeatherData.properties.timeseries.findIndex(timeseries => timeseries.time === localTime);
+        if (matchingTimeseriesIndex === -1) {
+            setError('No matching timeseries found for the current local time.');
+            handleCardDelete();
+        } else {
+            const firstTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex];
+            const secondTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 1];
+            const thirdTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 2];
 
-        setWeatherData({ ...newWeatherData, properties: { ...newWeatherData.properties, timeseries: [firstTimeseries, secondTimeseries, thirdTimeseries] } });
-        setFirstTime(firstTimeseries.time);
-        setSecondTime(secondTimeseries.time);
-        setThirdTime(thirdTimeseries.time);
-        setTemperature(firstTimeseries.data.instant.details.air_temperature);
-        setSecondTemperature(secondTimeseries.data.instant.details.air_temperature);
-        setThirdTemperature(thirdTimeseries.data.instant.details.air_temperature);
+            setFirstTime(firstTimeseries.time);
+            setSecondTime(secondTimeseries.time);
+            setThirdTime(thirdTimeseries.time);
 
-        const countryData = geocodingResponse.data.results[0].components.country;
-        const flagData = geocodingResponse.data.results[0].annotations.flag;
-        const cityData = geocodingResponse.data.results[0].components.city;
-        const archipelagoData = geocodingResponse.data.results[0].components.archipelago;
-        const normalizedCityData = geocodingResponse.data.results[0].components._normalized_city;
-        const stateData = geocodingResponse.data.results[0].components.state;
-        const continentData = geocodingResponse.data.results[0].components.continent;
-        const formattedData = geocodingResponse.data.results[0].components.formatted;
-        setCountry(countryData);
-        setFlag(flagData);
-        setCity(cityData);
-        setArchipelago(archipelagoData);
-        setNormalizedCity(normalizedCityData);
-        setState(stateData);
-        setContinent(continentData);
-        setFormatted(formattedData);
-    }
+            if (unit === '˚C') {
+                setTemperature(firstTimeseries.data.instant.details.air_temperature);
+                setSecondTemperature(secondTimeseries.data.instant.details.air_temperature);
+                setThirdTemperature(thirdTimeseries.data.instant.details.air_temperature);
+            } else if (unit === '˚F') {
+                const convertedTemperature = firstTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+                const secondConvertedTemperature = secondTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+                const thirdConvertedTemperature = thirdTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+                setTemperature(convertedTemperature);
+                setSecondTemperature(secondConvertedTemperature);
+                setThirdTemperature(thirdConvertedTemperature);
+            }
+
+            const countryData = geocodingResponse.data.results[0].components.country;
+            const flagData = geocodingResponse.data.results[0].annotations.flag;
+            const cityData = geocodingResponse.data.results[0].components.city;
+            const archipelagoData = geocodingResponse.data.results[0].components.archipelago;
+            const normalizedCityData = geocodingResponse.data.results[0].components._normalized_city;
+            const stateData = geocodingResponse.data.results[0].components.state;
+            const continentData = geocodingResponse.data.results[0].components.continent;
+            const formattedData = geocodingResponse.data.results[0].components.formatted;
+            setCountry(countryData);
+            setFlag(flagData);
+            setCity(cityData);
+            setArchipelago(archipelagoData);
+            setNormalizedCity(normalizedCityData);
+            setState(stateData);
+            setContinent(continentData);
+            setFormatted(formattedData);
+        }
     } catch (error) {
-    console.error('Error fetching weather data:', error);
+        console.error('Error fetching weather data:', error);
     }
-}, [localTime]);
+}, [localTime, unit]);
+
 
 const onMapClick = useCallback((event) => {
     setMarkers([]);
