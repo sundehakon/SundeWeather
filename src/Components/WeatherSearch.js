@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../App.css';
-import SettingsModal from './SettingsModal';
 import { Button, Typography, Paper, Box, TextField, RadioGroup, FormControl, FormControlLabel, Radio, IconButton } from '@mui/material';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
@@ -9,9 +8,8 @@ import { symbolMapping } from './SymbolMapping';
 import CloseIcon from '@mui/icons-material/Close';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import SettingsIcon from '@mui/icons-material/Settings';
 
-function WeatherSearch() {
+function WeatherSearch({ displayFlag, displayFavorites }) {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState(null);
@@ -29,9 +27,6 @@ function WeatherSearch() {
   const [secondTemperature, setSecondTemperature] = useState(0);
   const [thirdTemperature, setThirdTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [displayFlag, setDisplayFlag] = useState(true);
-  const [displayFavorites, setDisplayFavorites] = useState(true);
   const [localTime, setLocalTime] = useState(null);
   const [firstTime, setFirstTime] = useState(null);
   const [secondTime, setSecondTime] = useState(null);
@@ -193,20 +188,12 @@ function WeatherSearch() {
     handleFormSubmit({ preventDefault: () => { } });
   };
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
     <div>
       <Box sx={{ position: 'relative', zIndex: 1 }}>
         <form onSubmit={handleFormSubmit}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Paper sx={{ padding: 9, marginTop: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderRadius: 7, boxShadow: 3 }}>
-              <Box sx={{ alignSelf: 'flex-end', marginBottom: 3 }}>
-                <IconButton onClick={handleOpen}>
-                  <SettingsIcon />
-                </IconButton>
-              </Box>
               <Typography variant='h3' sx={{ textAlign: 'center' }}>{t('title')}</Typography>
               <TextField type="text" value={location} onChange={handleLocationChange} placeholder={t('input')} sx={{ marginTop: 3 }} variant='standard' disabled={formDisabled} />
               <Button type="submit" sx={{ marginTop: 3 }} disabled={formDisabled}>{t('button')}</Button>
@@ -304,7 +291,6 @@ function WeatherSearch() {
           </Box>
         )}
       </Box>
-      <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>
     </div>
   );
 }

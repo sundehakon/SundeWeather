@@ -12,7 +12,6 @@ import SettingsModal from './Components/SettingsModal';
 const App = () => {
   const [display, setDisplay] = useState('weatherSearch');   
   const [isSettingsOpen, setIsSettingsOpen] = useState(false); 
-  const [open, setOpen] = useState(false);
   const [displayFlag, setDisplayFlag] = useState(true);
   const [displayFavorites, setDisplayFavorites] = useState(true);  
   const { t } = useTranslation();
@@ -21,7 +20,7 @@ const App = () => {
     setIsSettingsOpen(!isSettingsOpen);
   };
 
-  const handleClose = () => setOpen(false); 
+  const handleClose = () => setIsSettingsOpen(false); 
 
   const displayWeatherSearch = () => {
     setDisplay('weatherSearch');
@@ -53,10 +52,29 @@ const App = () => {
           <Button style={{ minWidth: '125px' }} onClick={displayInteractiveMap}>{t('titleMap')}</Button>
         </ButtonGroup>
       </div>
-      {display === 'weatherSearch' && <WeatherSearch />}
-      {display === 'interactiveMap' && <InteractiveMap />}
+      {display === 'weatherSearch' && (
+        <WeatherSearch 
+          displayFlag={displayFlag}
+          displayFavorites={displayFavorites}
+        />
+      )}
+      {display === 'interactiveMap' && (
+        <InteractiveMap
+          displayFlag={displayFlag}
+          displayFavorites={displayFavorites} 
+        />
+      )}
       <Footer />
-      {isSettingsOpen && <SettingsModal open={open} handleClose={handleClose} displayFlag={displayFlag} setDisplayFlag={setDisplayFlag} displayFavorites={displayFavorites} setDisplayFavorites={setDisplayFavorites}/>}
+      {isSettingsOpen && (
+        <SettingsModal 
+          open={isSettingsOpen} 
+          handleClose={handleClose} 
+          displayFlag={displayFlag} 
+          setDisplayFlag={setDisplayFlag} 
+          displayFavorites={displayFavorites} 
+          setDisplayFavorites={setDisplayFavorites}
+        />
+      )}
     </ThemeProvider>
   );
 };
