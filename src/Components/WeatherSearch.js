@@ -26,11 +26,16 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
   const [temperature, setTemperature] = useState(0);
   const [secondTemperature, setSecondTemperature] = useState(0);
   const [thirdTemperature, setThirdTemperature] = useState(0);
+  const [fourthTemperature, setFourthTemperature] = useState(0);
+  const [fifthTemperature, setFifthTemperature] = useState(0);
   const [favorites, setFavorites] = useState([]);
   const [localTime, setLocalTime] = useState(null);
   const [firstTime, setFirstTime] = useState(null);
   const [secondTime, setSecondTime] = useState(null);
   const [thirdTime, setThirdTime] = useState(null);
+  const [fourthTime, setFourthTime] = useState(null);
+  const [fifthTime, setFifthTime] = useState(null);
+  const [expand, setExpand] = useState(false);
   const { t } = useTranslation();
   const { user, isAuthenticated } = useAuth0();
 
@@ -60,16 +65,27 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
       setTemperature(weatherData.properties.timeseries[0].data.instant.details.air_temperature);
       setSecondTemperature(weatherData.properties.timeseries[1].data.instant.details.air_temperature);
       setThirdTemperature(weatherData.properties.timeseries[2].data.instant.details.air_temperature);
+      setFourthTemperature(weatherData.properties.timeseries[3].data.instant.details.air_temperature);
+      setFifthTemperature(weatherData.properties.timeseries[4].data.instant.details.air_temperature);
+
     } else if (event.target.value === '˚F') {
       const convertedTemperature = weatherData.properties.timeseries[0].data.instant.details.air_temperature * 9 / 5 + 32;
       const secondConvertedTemperature = weatherData.properties.timeseries[1].data.instant.details.air_temperature * 9 / 5 + 32;
       const thirdConvertedTemperature = weatherData.properties.timeseries[2].data.instant.details.air_temperature * 9 / 5 + 32;
+      const fourthConvertedTemperature = weatherData.properties.timeseries[3].data.instant.details.air_temperature * 9 / 5 + 32;
+      const fifthConvertedTemperature = weatherData.properties.timeseries[4].data.instant.details.air_temperature * 9 / 5 + 32;
+
       const formattedTemperature = convertedTemperature.toFixed(2);
       const secondFormattedTemperature = secondConvertedTemperature.toFixed(2);
       const thirdFormattedTemperature = thirdConvertedTemperature.toFixed(2);
+      const fourthFormattedTemperature = fourthConvertedTemperature.toFixed(2);
+      const fifthFormattedTemperature = fifthConvertedTemperature.toFixed(2);
+
       setTemperature(parseFloat(formattedTemperature));
       setSecondTemperature(parseFloat(secondFormattedTemperature));
       setThirdTemperature(parseFloat(thirdFormattedTemperature));
+      setFourthTemperature(parseFloat(fourthFormattedTemperature));
+      setFifthTemperature(parseFloat(fifthFormattedTemperature));
     }
   };
 
@@ -107,23 +123,34 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
           const firstTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex];
           const secondTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 1];
           const thirdTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 2];
+          const fourthTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 3];
+          const fifthTimeseries = newWeatherData.properties.timeseries[matchingTimeseriesIndex + 4];
   
-          setWeatherData({ ...newWeatherData, properties: { ...newWeatherData.properties, timeseries: [firstTimeseries, secondTimeseries, thirdTimeseries] } });
+          setWeatherData({ ...newWeatherData, properties: { ...newWeatherData.properties, timeseries: [firstTimeseries, secondTimeseries, thirdTimeseries, fourthTimeseries, fifthTimeseries] } });
           setFirstTime(firstTimeseries.time);
           setSecondTime(secondTimeseries.time);
           setThirdTime(thirdTimeseries.time);
+          setFourthTime(fourthTimeseries.time);
+          setFifthTime(fifthTimeseries.time);
   
           if (unit === '˚C') {
             setTemperature(firstTimeseries.data.instant.details.air_temperature);
             setSecondTemperature(secondTimeseries.data.instant.details.air_temperature);
             setThirdTemperature(thirdTimeseries.data.instant.details.air_temperature);
+            setFourthTemperature(fourthTimeseries.data.instant.details.air_temperature);
+            setFifthTemperature(fifthTimeseries.data.instant.details.air_temperature);
           } else if (unit === '˚F') {
             const convertedTemperature = firstTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
             const secondConvertedTemperature = secondTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
             const thirdConvertedTemperature = thirdTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+            const fourthConvertedTemperature = fourthTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+            const fifthConvertedTemperature = fifthTimeseries.data.instant.details.air_temperature * 9 / 5 + 32;
+
             setTemperature(parseFloat(convertedTemperature.toFixed(2)));
             setSecondTemperature(parseFloat(secondConvertedTemperature.toFixed(2)));
             setThirdTemperature(parseFloat(thirdConvertedTemperature.toFixed(2)));
+            setFourthTemperature(parseFloat(fourthConvertedTemperature.toFixed(2)));
+            setFifthTemperature(parseFloat(fifthConvertedTemperature.toFixed(2)));
           }
         }
   
@@ -199,6 +226,10 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
     const locationString = `${favorite.city || favorite.normalizedCity || favorite.state || favorite.country || favorite.continent || favorite.formatted}`;
     setLocation(locationString);
     handleFormSubmit({ preventDefault: () => { } });
+  };
+
+  const handleExpand = () => {
+    setExpand(true);
   };
 
   return (
@@ -298,6 +329,33 @@ function WeatherSearch({ displayFlag, displayFavorites }) {
                     <img src={symbolMapping[weatherData.properties.timeseries[2].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }}/>
                   </Box>
                 </div>
+              )}
+              {!expand && <Button onClick={handleExpand}>{t('expand')}</Button>}
+              {expand && (
+                <>
+                  {fourthTime && (
+                    <div>
+                      <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center' }}>
+                        {new Date(fourthTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                        <Typography>{fourthTemperature} {unit}</Typography>
+                        <img src={symbolMapping[weatherData.properties.timeseries[3].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }} />
+                      </Box>
+                    </div>
+                  )}
+                  {fifthTime && (
+                    <div>
+                      <Typography variant='h5' sx={{ marginTop: 4, marginBottom: 1, textAlign: 'center' }}>
+                        {new Date(fifthTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                        <Typography>{fifthTemperature} {unit}</Typography>
+                        <img src={symbolMapping[weatherData.properties.timeseries[4].data.next_1_hours.summary.symbol_code]} alt='Weather symbol' style={{ height: 64, width: 64 }} />
+                      </Box>
+                    </div>
+                  )}
+                </>
               )}
             </Paper>
           </Box>
