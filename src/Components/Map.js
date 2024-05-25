@@ -183,24 +183,24 @@ const onMapClick = useCallback((event) => {
 
 const handleFavorite = () => {
     if (!isAuthenticated) return;
-    const favoriteData = {
-    lat: weatherData.geometry.coordinates[1],
-    lon: weatherData.geometry.coordinates[0],
-    userId: user.sub,
-    country: country,
-    flag: flag,
-    city: city,
-    archipelago: archipelago,
-    normalizedCity: normalizedCity,
-    state: state,
-    continent: continent,
-    formatted: formatted,
+        const favoriteData = {
+        lat: weatherData.geometry.coordinates[1],
+        lon: weatherData.geometry.coordinates[0],
+        userId: user.sub,
+        country: country,
+        flag: flag,
+        city: city,
+        archipelago: archipelago,
+        normalizedCity: normalizedCity,
+        state: state,
+        continent: continent,
+        formatted: formatted,
     };
+
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     const newFavorites = [...storedFavorites, favoriteData];
     localStorage.setItem('favorites', JSON.stringify(newFavorites));
     setFavorites(newFavorites.filter(fav => fav.userId === user.sub));
-    console.log(favorites);
 };
 
 const isFavorite = () => {
@@ -234,6 +234,7 @@ const handleFavoriteClick = (favorite) => {
     if (city) {
         setLatitude(favorite.lat);
         setLongitude(favorite.lon);
+        setMarkers([{ lat: favorite.lat, lng: favorite.lon }]);
         handleFormSubmit(favorite.lat, favorite.lon);
     }
 };
