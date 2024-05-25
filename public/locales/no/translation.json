@@ -10,6 +10,11 @@
     "favoritesLogin": "Logg inn for å lagre favorittsteder",
     "favorites": "Favoritter",
     "favoritesMessage": "Trykk hjerte på lokasjon for å legge til i favoritter",
+    "myLocation": "Bruk Min Posisjon",
+    "settings": "Innstillinger",
+    "language": "Velg Språk",
+    "displayFlag": "Vis Flagg?",
+    "displayFavorites": "Vis Favoritter?",
     "weather": "Vær for",
     "data": "Data fra Yr og OpenCage",
     "credit": "Nettside skapt av"

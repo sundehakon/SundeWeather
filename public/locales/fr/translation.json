@@ -1,0 +1,21 @@
+{
+    "title": "Recherche Météo",
+    "titleMap": "Carte Interactive",
+    "button": "Obtenir la Météo",
+    "input": "Entrez l'emplacement...",
+    "welcome": "Bienvenue, ",
+    "login": "Se Connecter",
+    "logout": "Se Déconnecter",
+    "caption": "Emplacement incorrect ? Essayez d'ajouter le pays à la demande !",
+    "favoritesLogin": "Connectez-vous pour enregistrer les favoris",
+    "favorites": "Favoris",
+    "favoritesMessage": "Cliquez sur le cœur à côté de l'emplacement pour l'ajouter aux favoris",
+    "weather": "Météo pour",
+    "myLocation": "Utiliser ma Position",
+    "settings": "Paramètres",
+    "language": "Choisir la Langue",
+    "displayFlag": "Afficher le Drapeau ?",
+    "displayFavorites": "Afficher les Favoris ?",
+    "data": "Données de Yr et OpenCage",
+    "credit": "Site créé par"
+}

@@ -11,6 +11,11 @@
     "favorites": "Favorites",
     "favoritesMessage": "Click heart on location to add to favorites",
     "weather": "Weather for",
+    "myLocation": "Use My Location",
+    "settings": "Settings",
+    "language": "Choose Language",
+    "displayFlag": "Display Flag?",
+    "displayFavorites": "Display Favorites?",
     "data": "Data from Yr and OpenCage",
     "credit": "Website created by"
 }

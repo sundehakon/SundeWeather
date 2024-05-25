@@ -224,7 +224,7 @@ return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
         <Box sx={{ marginBottom: 2 }}>
             <Button onClick={fetchCurrentLocation}>
-                Use My Location 
+                {t('myLocation')} 
             </Button>
         </Box>
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
