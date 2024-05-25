@@ -225,12 +225,9 @@ const handleCardDelete = () => {
 
 return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }}>
-            <Button onClick={fetchCurrentLocation}>
-                Use My Location 
-                <PlaceIcon />
-            </Button>
-        </Box>
+        <Button onClick={fetchCurrentLocation} sx={{ marginBottom: 2 }}>
+            Use My Location 
+        </Button>
         <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <Box sx={{ width: '50%', height: '50vh', minWidth: 350 }}>
             <GoogleMap

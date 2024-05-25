@@ -6,7 +6,7 @@
     "welcome": "Velkommen, ",
     "login": "Logg Inn",
     "logout": "Logg Ut",
-    "caption": "Hvis været ikke vises, prøv å legge til landet i forespørselen...",
+    "caption": "Er ikke lokasjonen riktig? Prøv å legg til landet i søket!",
     "favoritesLogin": "Logg inn for å lagre favorittsteder",
     "favorites": "Favoritter",
     "favoritesMessage": "Trykk hjerte på lokasjon for å legge til i favoritter",
